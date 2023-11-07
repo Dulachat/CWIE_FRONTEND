@@ -1,128 +1,134 @@
-import { Form, Input, message, Upload, Modal } from 'antd'
-import React, { useState } from 'react'
+import { Form, Input, message, Upload, Modal  } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-
-const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
+import MyEditorInfo from './QuillEditorInfo';
+import { useRouter } from 'next/router';
 
 
-export default function FormInfoDiary() {
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState([]); //showImage in values array
+export default function FormInfoDiary(props) {
+    const [messageApi, contextHolder] = message.useMessage();
+    const router = useRouter()
+    const messageError = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'มีข้อมูลนี้แล้ว',
+        });
+    }
+    const messageSuccess = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'แก้ไขข้อมูลเรียบร้อย',
+        });
 
-    const handleCancel = () => setPreviewOpen(false);
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setPreviewImage(file.url || file.preview);
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
-    };
-    const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-    const uploadButton = (
-        <div >
-            <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-                Upload
-            </div>
-        </div>
-    );
+        setTimeout(() => {
+           router.reload();
+        }, 500)
+
+    }
+
+    const [data, setData] = useState();
+    useEffect(() => {
+   
+        setData(props.data);
+    }, [props])
+    const sendData = (data) => {
+        const axios = require('axios');
+        let raw = JSON.stringify({
+           "diary_comment":data.diary_comment,
+        });
+        let config = {
+            method: 'patch',
+            maxBodyLength: Infinity,
+            url: process.env.NEXT_PUBLIC_API_URL + "Diary/updateDairy/" + data.diary_date,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: raw
+        };
+        axios.request(config)
+            .then((response) => {
+                { messageSuccess() }
+            }
+            )
+            .catch((error) => console.log(error));
+    }
     return (
         <>
-            <Form
-                layout="inline"
-                name='AddDiary'
-                action='#'>
+        {contextHolder}
+            {data !== undefined &&
+                <div className='w-full'>
+                    <Form
+                    layout="inline"
+                    name='AddDiary'
+                    onFinish={sendData}
 
-                <div className='w-full mt-2'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">รายการปฏิบัติงานประจำวันที่
+                >
+                    <div className='w-full  mt-2'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">รายการปฏิบัติงานประจำวันที่  </label>
                         <Form.Item
 
                             name={"diary_date"}
-                            rules={[{ required: true, message: "เลือกวันที่" }]}>
+                            rules={[{ required: true, message: "เลือกวันที่" }]}
+                            initialValue={data.diary_date}
+                        >
 
                             <Input type='date' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' disabled />
                         </Form.Item>
-                    </label>
-                </div>
 
-                <div className='w-full mt-2'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> เวลาเข้างาน
+                    </div>
+
+                    <div className='w-full mt-2'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> เวลาเข้างาน   </label>
                         <Form.Item
-                            name={"in_time"}
-                            rules={[{ required: true, message: "กรอกเวลาเข้างาน" }]}>
+                            name={"time_in"}
+                            rules={[{ required: true, message: "กรอกเวลาเข้างาน" }]}
+                            initialValue={data.time_in}
+                        >
 
                             <Input type='time' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' disabled />
                         </Form.Item>
-                    </label>
-                </div>
-                <div className=' w-full mt-2'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> เวลาออกงาน
+
+                    </div>
+                    <div className=' w-full mt-2'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> เวลาออกงาน </label>
                         <Form.Item
-                            name={"out_time"}
-                            rules={[{ required: true, message: "กรอกเวลาออกงาน" }]}>
+                            name={"time_out"}
+                            rules={[{ required: true, message: "กรอกเวลาออกงาน" }]}
+                            initialValue={data.time_out}
+                        >
 
                             <Input type='time' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' disabled />
                         </Form.Item>
-                    </label>
-                </div>
-                <div className='w-full'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> รายละเอียด
-                        <Form.Item name={"diary_detail"} >
+
+                    </div>
+                    <div className='w-full'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> รายละเอียด  </label>
+                        <Form.Item name={"diary_detail"}
+                            initialValue={data.diary_detail}
+                        >
                             <Input.TextArea style={{ height: 100 }} disabled />
                         </Form.Item>
-                    </label>
-                </div>
-                <div className='w-full mt-2  justify-self-center'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> แนบรูปภาพ </label>
-                        <Upload
 
-                            listType="picture-card"
-                            fileList={fileList}
-                            onPreview={handlePreview}
-                            onChange={handleChange}
-                            className="justify-self-center"
+                    </div>
+
+                    <div className='w-full'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> คำแนะนำจากอาจารย์  </label>
+                        <Form.Item name={"diary_comment"} 
+                        initialValue={data.diary_comment}
                         >
-                            {fileList.length >= 8 ? null : uploadButton}
-                        </Upload>
-                   
-                    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel} className="justify-self-center mx-10">
-                        <img
-                            alt="example"
-                            style={{
-                                width: '100%',
-                            }}
-                            src={previewImage}
-                        />
-                    </Modal>
-
-                </div>
-                <div className='w-full'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> คำแนะนำจากอาจารย์
-                        <Form.Item name={"diary_comment"} >
-                            <Input.TextArea style={{ height: 100 }} />
+                            <Input.TextArea  style={{ height: 100 }} />
                         </Form.Item>
-                    </label>
-                </div>
-                <div className='w-full mt-2'>
-                    <button className='w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'>
-                        บันทึกข้อมูล
-                    </button>
+                    </div>
+                    <div className='w-full mt-2'>
+                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> รายละเอียด </label>
+                        <MyEditorInfo data={props.data.Detail.detail_text} />
+                    </div>
+
+                </Form>
                 </div>
 
-            </Form>
+            }
+
         </>
     )
 }

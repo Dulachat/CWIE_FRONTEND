@@ -1,12 +1,8 @@
 import { Card, Form, Input, Button, Select } from 'antd'
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import FormRegister from './components/FormRegister'
 export default function register() {
     const size = "large"
-
-
-   
-
     return (
         <>
             <div className="justify-items-center mt-3 mr-5 flex ml-5 ">

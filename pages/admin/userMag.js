@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../Components/Navbar';
+import Navbar from '../components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
 import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
-import FormAddUser from '../Components/FormAddUser';
-import FormEditUser from '../Components/FormEditUser';
+
 import { useRouter } from 'next/router';
 import axiosInstance from '../../utils/axios'
+
+import FormAddUser from '../components/FormAddUser';
+import FormEditUser from '../components/FormEditUser';
+
 const size = "large"
-export default function studentMag() {
+export default function UserMag() {
     const router = useRouter();
     const iconSize = "large"
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,9 +26,7 @@ export default function studentMag() {
     useEffect(() => {
         axiosInstance.get('users/allUsers')
             .then(function (response) {
-                console.log(response)
                 setData(response.data)
-
             })
     }, [dummyState])
 
@@ -45,15 +46,8 @@ export default function studentMag() {
         setOpenAdd(false);
     };
 
-    const showModalEdit = (id) => {
-
-        console.log(id)
-        axiosInstance.get('users/oneUsers/' + id)
-            .then(function (response) {
-                console.log(response)
-                setDataEdit(response.data)
-
-            })
+    const showModalEdit = (data) => {
+        setDataEdit(data)
         rerender(dummyState + 1);
         setOpenEdit(true);
     };
@@ -70,7 +64,7 @@ export default function studentMag() {
             key: 'name',
             sorter: true,
             render: (_, record) => {
-                return <text>{record.fname_TH + " " + record.lname_TH}</text>
+                return <p>{record.fname_TH + " " + record.lname_TH}</p>
             },
             filteredValue: [searchText],
             onFilter: (value, record) => {
@@ -91,7 +85,7 @@ export default function studentMag() {
             title: 'ระดับผู้ใช้งาน',
             key: 'userLevel',
             render: (text) =>
-                <text>{text.userLevelJoin.level_name}</text>
+                <p>{text.userLevelJoin.level_name}</p>
             ,
         },
         // {
@@ -112,7 +106,7 @@ export default function studentMag() {
             width: "10%",
             render: (_, record) => (
 
-                <Button icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={(e) => showModalEdit(record.id)} type="primary">
+                <Button icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={(e) => showModalEdit(record)} type="primary">
                     Edit
                 </Button>
 
@@ -163,15 +157,15 @@ export default function studentMag() {
                             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                             placeholder="ค้นหารายชื่อผู้ใช้งาน"
                             size={size}
-                            onSearch={(value) => {
-                                setsearchText(value);
-                            }}
                             onChange={(e) => {
+                                setsearchText(e.target.value);
+                            }}
+                            onPressEnter={(e) => {
                                 setsearchText(e.target.value);
                             }}
                         />
                     </div>
-                    <Table columns={columns} dataSource={data} style={{ overflow: "auto" }} />
+                    <Table columns={columns} rowKey={obj => obj.id} dataSource={data} style={{ overflow: "auto" }} />
                 </div>
             </main>
 

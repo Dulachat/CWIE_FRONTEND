@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import Navbar from '../Components/Navbar';
+import Navbar from '../components/Navbar';
 import { Tabs } from 'antd';
 import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
-import GeneralMagTab1 from '../components/generalMagTab1';
-import GeneralMagTab2 from '../components/generalMagTab2';
-export default function generalMag() {
+import GeneralMagTab2 from '../components/GeneralMagTab2';
+import GeneralMagTab1 from '../components/GeneralMagTab1';
+
+export default function GeneralMag() {
   
 
     const onChange = (key) => {
@@ -35,7 +36,7 @@ export default function generalMag() {
             </header>
             <main>
                 <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 ">
-                    <Tabs key={'1'} defaultActiveKey="1" items={items} onChange={onChange} />
+                    <Tabs key={'1'} defaultActiveKey="1"  items={items} onChange={onChange} />
                 </div>
             </main>
         

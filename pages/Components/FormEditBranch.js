@@ -1,13 +1,16 @@
-import React from 'react'
-import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs, Row, message } from 'antd';
-import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
-import axiosInstance from '../../utils/axios'
+import React, { useEffect } from 'react'
+import { Button, Form, Input, Row, message } from 'antd';
 import { useRouter } from 'next/router';
-export default function FormEditBranch(item) {
-    console.log(item)
+import { useState } from 'react';
+
+const FormEditBranch = (item) => {
     const [messageApi, contextHolder] = message.useMessage();
+    const [dataEdit, setData] = useState([]);
     const size = "large";
     const router = useRouter();
+    useEffect(() => {
+        setData(item.data)
+    }, [item])
     const messageError = () => {
         messageApi.open({
             type: 'error',
@@ -26,7 +29,6 @@ export default function FormEditBranch(item) {
         })
     }
     const sendEditData = (value) => {
-        console.log(value);
         const axios = require('axios');
         let data = JSON.stringify({
             "branch_name": value.branch_name,
@@ -34,7 +36,7 @@ export default function FormEditBranch(item) {
         let config = {
             method: 'patch',
             maxBodyLength: Infinity,
-            url: process.env.NEXT_PUBLIC_API_URL + "branch/updateBranch/" +item.data.id,
+            url: `${process.env.NEXT_PUBLIC_API_URL}` + "branch/updateBranch/" + dataEdit.id,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -42,7 +44,6 @@ export default function FormEditBranch(item) {
         };
         axios.request(config)
             .then((response) => {
-                console.log(response);
                 if (response.data === "error") {
                     { messageError() }
                 }
@@ -56,15 +57,17 @@ export default function FormEditBranch(item) {
 
     }
     return (
-        <>{contextHolder}
+        <>
+            {contextHolder}
+          
             <div className='w-full'>
-                <Form name='editBranch' onFinish={sendEditData} key={item.data.id}>
+                <Form name='editBranch' onFinish={sendEditData} key={dataEdit.id}>
                     <Row>
-                        <div className='w-full mt-1 px-1'>
+                        <div className='w-full mt-1 px-1' key={"branch_name"}>
 
                             <label>ชื่อสถานประกอบการณ์  </label>
-                            <Form.Item name="branch_name" initialValue={item.data.branch_name} noStyle>
-                                <Input value={item.data.branch_name} className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            <Form.Item name="branch_name" initialValue={dataEdit.branch_name} noStyle>
+                                <Input value={dataEdit.branch_name} className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
                             </Form.Item>
                             {/* <span>description</span> */}
 
@@ -81,3 +84,5 @@ export default function FormEditBranch(item) {
         </>
     )
 }
+
+export default FormEditBranch;

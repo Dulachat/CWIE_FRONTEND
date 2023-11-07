@@ -2,33 +2,25 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import FormAddUser from '../components/formAddStudent';
-import FormEditUser from '../components/FormEditStudent';
 import InternTabs1 from '../components/InternTabs1';
 import InternTabs2 from '../components/InternTabs2';
-import InternTabs3 from '../components/InternTabs3';
 const size = "large"
-export default function internshipMag(key) {
+export default function InternshipMag(key) {
   const iconSize = "large"
- 
+
   const onChange = (key) => {
-    console.log(key);
+    
   };
   const items = [
     {
       key: '1',
       label: `การประเมิน`,
-      children: <InternTabs1 key={key}/>
-    },
-    {
-      key: '2',
-      label: `จัดการนักศึกษาฝึกประสบการณ์`,
-      children: <InternTabs2  key={key}/>,
+      children: <InternTabs1 key={key} />
     },
     {
       key: '3',
       label: `จัดการผู้ประเมินนักศึกษา`,
-      children: <InternTabs3  key={key}/>,
+      children: <InternTabs2 key={key} />,
     },
   ];
 

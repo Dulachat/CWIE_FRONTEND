@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import FormAddStudent from '../components/formAddStudent';
+import FormAddStudent from '../components/FormAddStudent';
 import FormEditStudent from '../components/FormEditStudent';
 import axiosInstance from '../../utils/axios'
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ const size = "large"
 
 
 
-export default function studentMag(props) {
+export default function StudentMag(props) {
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const iconSize = "large"
@@ -31,9 +31,8 @@ export default function studentMag(props) {
     useEffect(() => {
         axiosInstance.get('student/allStudent')
             .then(function (response) {
-                console.log(response)
+               
                 setData(response.data)
-
             })
     }, [dummyState])
 
@@ -51,12 +50,11 @@ export default function studentMag(props) {
             key: 'name',
             sorter: true,
             render: (_, record) => {
-                return <text>{record.fname_TH + " " + record.lname_TH}</text>
+                return <p key={record.fname_TH}>{record.fname_TH + " " + record.lname_TH}</p>
             },
             filteredValue: [searchText],
             onFilter: (value, record) => {
                 return (
-
                     String(record.fname_TH)
                         .toLowerCase()
                         .includes(value.toLowerCase()) ||
@@ -72,7 +70,7 @@ export default function studentMag(props) {
             title: 'หมู่เรียน',
             dataIndex: 'student_group',
             sorter: true,
-            key: 'age',
+            key: 'student_group',
         },
         {
             title: 'สาขาวิชา',
@@ -81,9 +79,9 @@ export default function studentMag(props) {
             render: (_, record) => {
 
                 if (record === null) {
-                    return <text>ผู้ดูแลระบบ</text>
+                    return <p key={record.branchJoin.branch_name}>ผู้ดูแลระบบ</p>
                 } else {
-                  return  <text>{record.branchJoin.branch_name}</text>
+                  return  <p key={record.branchJoin.branch_name}>{record.branchJoin.branch_name}</p>
                 }
 
 
@@ -96,7 +94,7 @@ export default function studentMag(props) {
             width: "10%",
             render: (_, record) => (
 
-                <Button icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={(e) => showModalEdit(record.id)} type="primary">
+                <Button key={'buttonEdit'} icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={()=> showModalEdit(record.id)} type="primary">
                     Edit
                 </Button>
 
@@ -108,7 +106,7 @@ export default function studentMag(props) {
             width: "10%",
             render: (_, record) => (
 
-                <Button icon={<EyeOutlined />} onClick={(e) => { if (window.confirm("ยืนยันการลบข้อมูล")) { sendDelete(record.id) } }} className={'bg-red-600'} type="primary">
+                <Button key={"buttonDelete"} icon={<EyeOutlined />} onClick={(e) => { if (window.confirm("ยืนยันการลบข้อมูล")) { sendDelete(record.id) } }} className={'bg-red-600'} type="primary">
                     Delete
                 </Button>
 
@@ -126,42 +124,18 @@ export default function studentMag(props) {
             })
         rerender(dummyState + 1);
     }
-    const showModal = () => {
-        setOpen(true);
-    };
-    const handleOk = () => {
-        // setLoading(true);
-        // setTimeout(() => {
-        //     setLoading(false);
-        //     setOpen(false);
-        // }, 3000);
-        setOpen(false);
-    };
-    const handleCancel = () => {
-        setOpen(false);
-    };
-
-
     const showModal2 = () => {
         setOpenAdd(true);
     };
     const handleOkAdd = () => {
-        // setLoading(true);
-        // setTimeout(() => {
-        //     setLoading(false);
-        //     setOpen(false);
-        // }, 3000);
         setOpenAdd(false);
     };
     const handleCancelAdd = () => {
         setOpenAdd(false);
     };
-
     const showModalEdit = (id) => {
-        console.log(id)
         axiosInstance.get('student/oneStudent/' + id)
             .then(function (response) {
-                console.log(response)
                 setDataEdit(response.data)
                 setDataAddress(response.data.address)
                 setDataBranch(response.data.branchJoin)
@@ -170,11 +144,6 @@ export default function studentMag(props) {
         setOpenEdit(true);
     };
     const handleOkEdit = () => {
-        // setLoading(true);
-        // setTimeout(() => {
-        //     setLoading(false);
-        //     setOpen(false);
-        // }, 3000);
         rerender(dummyState + 1);
         setOpenEdit(false);
     };
@@ -193,8 +162,8 @@ export default function studentMag(props) {
                 </div>
             </header>
             <main>
-                <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                    <div className=' mr-5 float-right'>
+                <div key={"body"} className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                    <div key={"buttonAdd"} className=' mr-5 float-right'>
                         <button type="button" onClick={showModal2} className=" text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                             เพิ่มข้อมูลนักศึกษา
                         </button>
@@ -204,47 +173,19 @@ export default function studentMag(props) {
                             className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                             placeholder="ค้นหารายชื่อนักศึกษา"
                             size={size}
-                            onSearch={(value) => {
-                                setsearchText(value);
-                            }}
+                            key={"search"}
                             onChange={(e) => {
                                 setsearchText(e.target.value);
                             }}
                         />
                     </div>
-
-
-
-
-                    <Table columns={columns} dataSource={data} style={{ overflow: "auto" }} />
+                    <div className='w-full'>
+                    <Table key={'table'} columns={columns} rowKey={obj => obj.id} dataSource={data} style={{ overflow: "auto" }} />
+                    </div>
+                    
                 </div>
             </main>
-            {/* //Info content */}
-            <Modal
-                key={"Info"}
-                width={"90%"}
-                open={open}
-                title="รายละเอียด"
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[
-
-                    <button onClick={handleCancel} type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                        Cancel
-                    </button>,
-                    <button onClick={handleOk} type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                        Submit
-                    </button>
-
-                ]}
-            >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-            </Modal>
-
+      
             {/* //Add content */}
             <Modal
                 key={"add"}

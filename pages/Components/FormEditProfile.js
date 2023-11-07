@@ -1,144 +1,174 @@
-import React, { useState } from 'react'
-import { Space, Table, Tag, Button, Modal, Form, Input, Select } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Button, Form, Input, Select,message } from 'antd';
 import { useRouter } from 'next/router';
-
+import axiosInstance from '../../utils/axios';
 
 const size = "large"
-export default function FormEditProfile() {
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [selectedBranch, setSelectedBranch] = useState(null);
+export default function FormEditProfile(props) {
     const router = useRouter();
-    const handleChange = (value) => {
-        console.log(value)
-        setSelectedOption(value);
-    };
-    const handleChangeBranch = (value) => {
-        console.log(value)
-        setSelectedBranch(value);
-    };
-
-
-    const statusOptions = [
-        { value: "1", label: "แอดมิน" },
-        { value: "2", label: "อาจารย์" },
-        { value: "3", label: "พี่เลี้ยง" }
-    ]
-    const branchOptions = [
-        { value: "0", label: "เลือกสาขาวิชา" },
-        { value: "1", label: "วิทยาการคอมพิวเตอร์" },
-        { value: "2", label: "เคมี" },
-        { value: "3", label: "ไอที" }
-    ]
-    const redirectBack = ()=>{
-        window.red
+    const [data, setData] = useState();
+    const [messageApi, contextHolder] = message.useMessage();
+    const messageError = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'มีข้อมูลนี้แล้ว',
+        });
+    }
+    const messageSuccess = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'แก้ไขข้อมูลเรียบร้อย',
+        });
     }
 
+    useEffect(() => {
+  
+        setData(props.data)
+    }, [props])
+  
     const sendData = (value) => {
-        console.log(value);
+        const axios = require('axios');
+        let raw = JSON.stringify({
+            "username": value.username,
+            "fname_TH": value.fname_TH,
+            "lname_TH": value.lname_TH,
+            "fname_EN": value.fname_EN,
+            "lname_EN": value.lname_EN,
+            "email":value.email,
+            "tel":value.tel
+        });
+        let config = {
+            method: 'patch',
+            maxBodyLength: Infinity,
+            url: process.env.NEXT_PUBLIC_API_URL + "users/updateUsers/" + data.id,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: raw
+        };
+        axios.request(config)
+            .then((response) => {
+             
+                if (response.data === "error") {
+                    { messageError() }
+                }
+                if (response.data === "success") {
+                    localStorage.setItem("user", JSON.stringify(response));
+                    { messageSuccess() }
+                }
+            }
+            )
+            .catch((error) => console.log(error));
     }
 
     return (
-        <>
-            <Form
-                layout="inline"
-                name='AddUser'
-                // action={sendData}
-                onFinish={sendData}
-            >
+        <>{contextHolder}
+            {data !== undefined &&
+                <Form
+                    layout="inline"
+                    name='AddUser'
+                    // action={sendData}
+                    onFinish={sendData}
+                    key={data.id}
+                >
 
-                <div className='w-full mt-2'>
-
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> Username
-                        <Form.Item
-                            name={"username"}
-                            rules={[{ required: true, message: "กรุณากรอก Username" }]}
-
-                        >
-                            <Input readOnly className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
-                        </Form.Item>
-                    </label>
-                </div>
-                <div className='w-full mt-2 '>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Password
-                        <Form.Item
-
-                            name={"password"}
-                            rules={[{ required: true, message: "กรุณากรอก Password" }]}
-                        >
-                            <Input type='password' readOnly className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
-                        </Form.Item>
-                    </label>
-                </div>
-
-                <div className=' w-1/2  mt-2 '>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ชื่อภาษาไทย
-                        <Form.Item
-
-                            name={"fname_TH"}
-                            rules={[{ required: true, message: "กรุณากรอกชื่อ" }]}
-                        >
-                            <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
-                        </Form.Item>
-                    </label>
-                </div>
-                <div className="w-1/2 mt-2 ">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">นามสกุลภาษาไทย
-                        <Form.Item
-
-                            name={"lname_TH"}
-                            rules={[{ required: true, message: "กรุณากรอกนามสกุล" }]}
-                        >
-                            <Input className=' justify-self-end bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
-                        </Form.Item>
-                    </label>
-                </div>
-
-                {/* <div className="w-1/2 mt-2 ">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">สาขาวิชา
-                    <Form.Item
-                        name={"branch_id"}
-                        rules={[{ required: true, message: "กรุณากรอกสาขาวิชา" }]}
-                    >
-
-                        <Select name={"branch_id"}
-                            size={size}
-                            value={selectedBranch}
-                            onChange={handleChangeBranch}
-                            options={branchOptions}
-                            defaultValue="0"
+                    <div className='w-full mt-2'>
+                        <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> Username
+                            <Form.Item
+                                name={"username"}
+                                
+                                rules={[{ required: true, message: "กรุณากรอก Username" }]}
+                                initialValue={data.username}
                             >
-                        </Select>
-                    </Form.Item>
-                    </label>
-                </div>
-                <div className="w-1/2 mt-2 ">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ระดับผู้ใช้งาน
-                    <Form.Item
-                        name={"status"}
-                        rules={[{ required: true, message: "กรุณาเลือก ระดับผู้ใช้งาน" }]}
-                    >
+                                <Input  readOnly className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
 
-                        <Select name={"status"}
-                            size={size}
-                            value={selectedOption}
-                            onChange={handleChange}
-                            options={statusOptions}
-                            >      
-                                             
-                        </Select>
-                    </Form.Item>
-                    </label>
-                </div> */}
 
-                <div className="w-full mt-5 ">
-                    <Form.Item  >
-                        <Button htmlType="submit" className=" text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" block size={size}>
-                            บันทึกข้อมูล
-                        </Button>
-                    </Form.Item>
-                </div>
-            </Form>
-      
+                    <div className=' w-1/2  mt-2 '>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ชื่อภาษาไทย
+                            <Form.Item
+                                initialValue={data.fname_TH}
+                                name={"fname_TH"}
+                                rules={[{ required: true, message: "กรุณากรอกชื่อ" }]}
+                            >
+                                <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+                    <div className="w-1/2 mt-2 ">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">นามสกุลภาษาไทย
+                            <Form.Item
+                                initialValue={data.lname_TH}
+                                name={"lname_TH"}
+                                rules={[{ required: true, message: "กรุณากรอกนามสกุล" }]}
+                            >
+                                <Input className=' justify-self-end bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+                    <div className=' w-1/2  mt-2 '>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ชื่อภาษาอังกฤษ
+                            <Form.Item
+                                initialValue={data.fname_EN}
+                                name={"fname_EN"}
+                                rules={[{ required: true, message: "กรุณากรอกชื่อ" }]}
+                            >
+                                <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+                    <div className="w-1/2 mt-2 ">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">นามสกุลภาษาอังกฤษ
+                            <Form.Item
+                                initialValue={data.lname_EN}
+                                name={"lname_EN"}
+                                rules={[{ required: true, message: "กรุณากรอกนามสกุล" }]}
+                            >
+                                <Input className=' justify-self-end bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+                    <div className=' w-1/2  mt-2 '>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">อีเมล์
+                            <Form.Item
+                                initialValue={data.email}
+                                name={"email"}
+                             
+                            >
+                                <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+                    <div className="w-1/2 mt-2 ">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">เบอร์โทรศัพท์
+                            <Form.Item
+                                initialValue={data.tel}
+                                name={"tel"}
+                          
+                            >
+                                <Input className=' justify-self-end bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                            </Form.Item>
+                        </label>
+                    </div>
+
+
+
+
+
+
+                    <div className="w-full mt-5 ">
+                        <Form.Item  >
+                            <Button htmlType="submit" className=" text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" block size={size}>
+                                บันทึกข้อมูล
+                            </Button>
+                        </Form.Item>
+                    </div>
+                </Form>
+            }
+
+
         </>
     )
 }

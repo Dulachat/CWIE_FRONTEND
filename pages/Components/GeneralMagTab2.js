@@ -4,20 +4,20 @@ import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router';
 import axiosInstance from '../../utils/axios'
 import FormEditBranch from './FormEditBranch';
-function GeneralMagTab2() {
+
+export default function GeneralMagTab2() {
   const size = "large";
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [data, setData] = useState([]);
-  const [dataEdit, setEditData] = useState([]);
+  const [dataEdit, setEditData] = useState([null]);
   const [dummyState, rerender] = React.useState(1);
   const [id, setId] = useState(null);
   useEffect(() => {
     axiosInstance.get('branch/allBranch')
       .then(function (response) {
-        console.log(response)
         setData(response.data)
       })
   }, [dummyState])
@@ -32,7 +32,7 @@ function GeneralMagTab2() {
   useEffect(() => {
     axiosInstance.get('branch/oneBranch/'+id)
       .then(function (response) {
-        console.log(response)
+  
         setEditData(response.data)
       })
   }, [setId, id])
@@ -99,18 +99,7 @@ function GeneralMagTab2() {
 
       ),
     },
-    // {
-    //   title: 'ลบ',
-    //   key: 'actionDelete',
-    //   width: "10%",
-    //   render: (_, record) => (
-
-    //     <Button icon={<DeleteOutlined />} onClick={(e) => { if (window.confirm("ยืนยันการลบข้อมูล")) { onDelete(record.id) } }} className={'bg-red-600'} type="primary">
-    //       Delete
-    //     </Button>
-
-    //   ),
-    // },
+  
   ];
 
 
@@ -153,7 +142,7 @@ function GeneralMagTab2() {
         </div>
         <div className='w-full'>
           <label>รายชื่อสาขาวิชา</label>
-          <Table columns={columns} dataSource={data} pagination={5} style={{ overflow: "auto" }} />
+          <Table columns={columns}  dataSource={data} pagination={5} style={{ overflow: "auto" }} />
         </div>
       </div  >
 
@@ -199,6 +188,7 @@ function GeneralMagTab2() {
         ]}
       >
         <FormEditBranch  data={dataEdit}/>
+       
       </Modal>
     </>
 
@@ -207,5 +197,3 @@ function GeneralMagTab2() {
   )
 }
 
-
-export default GeneralMagTab2

@@ -1,58 +1,72 @@
-import { Fragment, useEffect, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
-const navigation = [
-  { name: "Dashboard", href: "/", current: false, key: "item-1" },
-  { name: "ADD MAP", href: "/student/addMap", current: false, key: "item-2" },
-  { name: "Export PDF", href: "", current: false, key: "item-3" },
-  { name: "คู่มือการใช้งาน", href: "https://drive.google.com/file/d/1Az_3kio-lvut2a0ah6OekCgnMP8zLil-/view?usp=drive_link/", current: false, key: "item-4" },
-];
+import { Fragment, useEffect, useState } from 'react'
+import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/router'
+
+
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
-export default function StudentNavbar() {
+export default function DashboardNavbar() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
-  const [dataStore, setDataStore] = useState();
-  const [data, setData] = useState();
+  const [isLogin, setIsLogin] = useState(false)
+  const [dataStore, setDataStore] = useState()
+  const [data, setData] = useState()
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored === null) {
-      router.push("/auth/login");
-      return;
-    }
-    setDataStore(stored ? JSON.parse(stored) : null);
-  }, []);
+      const stored = localStorage.getItem('user');
+      setDataStore(stored ? JSON.parse(stored) : fallbackValue);
+  }, [])
   useEffect(() => {
-    if (dataStore === undefined) return;
-    setData(dataStore.data);
-  }, [dataStore]);
+      if (dataStore === undefined) return
+      setData(dataStore.data)
+  }, [dataStore])
   useEffect(() => {
-    if (data === undefined) return;
-    setIsLogin(true);
-  }, [data]);
+      if (data === undefined) return
+          setIsLogin(true);
+  }, [data])
+console.log(data?.userLevelJoin?.level_name)
+  const navigation = [
+    { name: 'Dashboard', href: '/', current: false, key: 'item-1' },
+    {
+      name: 'คู่มือการใช้งาน',
+      href:
+        data?.userLevelJoin?.level_name === 'อาจารย์'
+          ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
+          : data?.userLevelJoin?.level_name === 'พี่เลี้ยง'
+          ? 'https://drive.google.com/file/d/1QLEe48O3UqeVtivaWuorwaAsFk3GQdXQ/view?usp=drive_link'
+          : data?.userLevelJoin?.level_name === 'แอดมิน'
+          ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
+          : 'https://drive.google.com/file/d/1Az_3kio-lvut2a0ah6OekCgnMP8zLil-/view?usp=drive_link',
+      key: 'item-4',
+    },
+  ];
+
 
   const logout = () => {
-    localStorage.clear();
-    router.push("/auth/login");
-  };
-  const ToProfile = () => {
-    router.push({
-      pathname: "/student/studentProfile",
-      query: {
-        uuid: data.uuid,
-      },
-    });
-  };
+   localStorage.clear();
+   router.push('/auth/login')
+  }
+  const checkProfile = () => {
+    if (data.userLevelJoin !== undefined) {
+      router.push({
+        pathname: '/profile',
+        query:{
+          uuid:data.uuid
+        }
+      })
+    } else {
+      router.push({
+        pathname: '/student/studentProfile',
+        query:{
+          uuid:data.uuid
+        }
+      })
+    }
+  }
   return (
-    <Disclosure
-      as="nav"
-      className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky"
-    >
+    <Disclosure as="nav" className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -88,12 +102,10 @@ export default function StudentNavbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-white hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          item.current ? 'bg-gray-900 text-white' : 'text-white hover:bg-gray-700 hover:text-white',
+                          'rounded-md px-3 py-2 text-sm font-medium'
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
                       </a>
@@ -102,6 +114,7 @@ export default function StudentNavbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
@@ -116,7 +129,9 @@ export default function StudentNavbar() {
                         }
                         alt=""
                       />
+                 
                     </Menu.Button>
+
                   </div>
                   <Transition
                     as={Fragment}
@@ -131,12 +146,9 @@ export default function StudentNavbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            onClick={ToProfile}
+                            onClick={checkProfile}
                             href={"#"}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Your Profile
                           </a>
@@ -147,10 +159,7 @@ export default function StudentNavbar() {
                           <a
                             onClick={logout}
                             href={"#"}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out
                           </a>
@@ -171,12 +180,10 @@ export default function StudentNavbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    'block rounded-md px-3 py-2 text-base font-medium'
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -186,5 +193,5 @@ export default function StudentNavbar() {
         </>
       )}
     </Disclosure>
-  );
+  )
 }

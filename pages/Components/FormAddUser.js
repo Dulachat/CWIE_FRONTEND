@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
+import {  Button, Form, Input, Select, message } from 'antd';
 import axiosInstance from '../../utils/axios'
 import { useRouter } from 'next/router';
 
@@ -36,43 +36,36 @@ export default function FormAddUser() {
     useEffect(() => {
         axiosInstance.get('users/allUsers')
             .then(function (response) {
-                //  console.log(response)
+              
                 setBranchData(response.data)
-                //  console.log(response.data)
+         
             })
     }, [dummyState])
 
     useEffect(() => {
         axiosInstance.get('branch/allBranch')
-            .then(function (response) {
-                //  console.log(response)
+            .then(function (response) {      
                 setBranchData(response.data)
-                console.log(response.data)
             })
     }, [])
 
     useEffect(() => {
         axiosInstance.get('company/allCompany')
             .then(function (response) {
-                //  console.log(response)
                 setCompanyData(response.data)
-                console.log(response.data)
             })
     }, [])
 
     useEffect(() => {
         axiosInstance.get('usersLevel/all')
             .then(function (response) {
-                //  console.log(response)
-                setUserLevel(response.data)
-                console.log(response.data)
+                setUserLevel(response.data)    
             })
     }, [])
-    //  console.log(branchData);
+ 
 
     const label = `${selectedOption ? "2" : "3"}`;
     const handleChange = (value) => {
-        console.log(value)
         if (value === 2) {
             setSelectedOption(value);
         }
@@ -85,14 +78,14 @@ export default function FormAddUser() {
 
     };
     const handleChangeBranch = (value) => {
-        console.log(value)
+  
         setSelectedBranch(value);
     };
 
 
 
     const sendData = (value) => {
-        console.log(value);
+      
         const axios = require('axios');
         let data = JSON.stringify({
             "username": value.username,
@@ -100,6 +93,7 @@ export default function FormAddUser() {
             "fname_TH": value.fname_TH,
             "lname_TH": value.lname_TH,
             "branch_id": value.branch_id,
+            "company_id": value.company_id,
             "user_level_id": value.user_level_id
 
         });
@@ -114,7 +108,6 @@ export default function FormAddUser() {
         };
         axios.request(config)
             .then((response) => {
-                console.log(response);
                 if (response.data === "error") {
                     { messageError() }
                 }
@@ -132,6 +125,7 @@ export default function FormAddUser() {
                 name='AddUser'
                 // action={sendData}
                 onFinish={sendData}
+                key={'addUser'}
             >
 
                 <div className='w-full mt-2'>
@@ -188,7 +182,7 @@ export default function FormAddUser() {
                         >
                             <Select size={size} defaultValue={"เลือกระดับผู้ใช้งาน"} onChange={handleChange}>
                                 {userLevelData.map((data) => (
-                                    <Select.Option value={data.id}>{data.level_name}</Select.Option>))}
+                                    <Select.Option key={data.id} value={data.id}>{data.level_name}</Select.Option>))}
                             </Select>
                         </Form.Item>
                     </label>
@@ -201,7 +195,7 @@ export default function FormAddUser() {
                         >
                             <Select size={size} defaultValue={"เลือกสาขาวิชา"}>
                                 {branchData.map((data) => (
-                                    <Select.Option value={data.id}>{data.branch_name}</Select.Option>))}
+                                    <Select.Option key={data.branch_name} value={data.id}>{data.branch_name}</Select.Option>))}
                             </Select>
                         </Form.Item>
                     </label>
@@ -216,7 +210,7 @@ export default function FormAddUser() {
                             >
                                 <Select size={size} defaultValue={"เลือกสถานประกอบการณ์"}>
                                     {companyData.map((data) => (
-                                        <Select.Option value={data.id}>{data.company_name}</Select.Option>))}
+                                        <Select.Option key={data.id} value={data.id}>{data.company_name}</Select.Option>))}
                                 </Select>
                             </Form.Item>
                         </label>

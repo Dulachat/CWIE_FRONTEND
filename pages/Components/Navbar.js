@@ -1,18 +1,58 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-
+import { Fragment, useEffect, useState } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import Link from "next/link";
 const navigation = [
-  { name: 'Dashboard', href: '/', current:false ,key:'item-1'},
-]
+  { name: "Dashboard", href: "/", current: false, key: "item-1" },
+  { name: "ระบบสหกิจศึกษา", href: "/admin", current: false, key: "item-2" },
+  { name: "ระบบเตรียมฝึก", href: "/", current: false, key: "item-3" },
+  { name: "คู่มือการใช้งาน", href: "https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link", current: false, key: "item-4" },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
+  const [dataStore, setDataStore] = useState();
+  const [data, setData] = useState();
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored === null) {
+      router.push("/auth/login");
+      return;
+    }
+    setDataStore(stored ? JSON.parse(stored) : null);
+  }, []);
+  useEffect(() => {
+    if (dataStore === undefined) return;
+    setData(dataStore.data);
+  }, [dataStore]);
+  useEffect(() => {
+    if (data === undefined) return;
+    setIsLogin(true);
+  }, [data]);
+
+  const ToProfile = () => {
+    router.push({
+      pathname: "/profile",
+      query: {
+        uuid: data.uuid,
+      },
+    });
+  };
+  const logout = () => {
+    localStorage.clear();
+    router.push("/auth/login");
+  };
   return (
-    <Disclosure as="nav" className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky">
+    <Disclosure
+      as="nav"
+      className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky"
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -48,10 +88,12 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-white hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-white hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </a>
@@ -60,7 +102,6 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-           
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
@@ -68,13 +109,14 @@ export default function Navbar() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={
+                          data?.profile_image
+                            ? `${process.env.NEXT_PUBLIC_API_URL}api/${data.profile_image}`
+                            : `../icon/avatar.jpg`
+                        }
                         alt=""
                       />
-                      {/* <p className=' text-white text-center mx-3 mt-1 '> อัฐพล พลฤทธิ์</p>  */}
-                      {/* section fate data */}
                     </Menu.Button>
-                   
                   </div>
                   <Transition
                     as={Fragment}
@@ -89,8 +131,12 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="/profile"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={ToProfile}
+                            href={"#"}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Your Profile
                           </a>
@@ -99,8 +145,12 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={logout}
+                            href={"#"}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Sign out
                           </a>
@@ -121,10 +171,12 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -134,5 +186,5 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

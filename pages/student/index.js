@@ -1,146 +1,100 @@
-import { Table, Select, Button, Input, Modal, Badge } from 'antd';
-import React from 'react'
-import StudentNavbar from '../components/StudentNavbar'
-import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import FormEditDiary from '../components/FormEditDiary';
-import FormInfoDiaryStudent from '../components/FormInfoDairyStudent';
-import { useRouter } from 'next/router';
-import { Alert, Calendar } from 'antd';
-import dayjs from 'dayjs';
-const getListData = (value) => {
-    let listData;
-    switch (value.date()) {
-        case 8:
-            listData = [
-                {
-                    type: 'success',
-                    content: 'ลงบันทึกประจำวันแล้ว',
-                },
-            ];
-            break;
+import React, { useEffect, useState } from "react";
+import { Card, Col, Row } from "antd";
+import {
+  ContainerTwoTone,
+  SlidersTwoTone,
+  ContactsTwoTone,
+  AppstoreTwoTone,
+} from "@ant-design/icons";
+import Navbar from "../components/Navbar";
+import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import Link from "next/link";
+import StudentNavbar from "../components/StudentNavbar";
 
-
-        default:
+export default function StudentIndex() {
+  const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
+  const [dataStore, setDataStore] = useState();
+  const [data, setData] = useState();
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored === null) {
+      router.push("/auth/login");
+      return;
     }
-    return listData || [];
-};
-
-export default function studentIndex() {
-
-
-    const dateCellRender = (value) => {
-        const listData = getListData(value);
-        return (
-            <ul className="events">
-                {listData.map((item) => (
-                    <li key={item.content}>
-                        <Badge status={item.type} text={item.content} />
-                    </li>
-                ))}
-            </ul>
-        );
-    };
-    const router = useRouter();
-    const [open, setOpen] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [openAdd, setOpenAdd] = useState(false);
-    var today = new Date();
-    const [value, setValue] = useState(() => dayjs(today));
-    const [selectedValue, setSelectedValue] = useState(() => dayjs(""));
-    const showModal = () => {
-        setOpen(true);
-    };
-
-    const columns = [
-        {
-            title: 'Day',
-            dataIndex: 'day',
-            key: 'day',
-
-            render: (text) => <a>{text}</a>,
-        },
-        {
-            title: 'timeIN',
-            dataIndex: 'timeIN',
-            key: 'timeIN',
-
-        },
-        {
-            title: 'timeOUT',
-            dataIndex: 'timeOUT',
-            key: 'timeOUT',
-
-
-        },
-        {
-            title: 'ดูข้อมูล',
-            key: 'actionInfo',
-            width: "10%",
-
-            render: (_, record) => (
-                <Button icon={<EyeOutlined />} onClick={showModal} className={' bg-sky-500'} type="primary">
-                    Info
-                </Button>
-            ),
-        },
-        {
-            title: 'แก้ไข',
-            key: 'actionEdit',
-            width: "10%",
-            render: (_, record) => (
-
-                <Button icon={<SettingOutlined />} onClick={showModalEdit} className={' bg-yellow-300'} >
-                    Edit
-                </Button>
-
-            ),
-        },
-
-    ];
-    const onSelect = (newValue) => {
-        setSelectedValue(newValue)
-        console.log(newValue);
-
-
-    };
-    const onPanelChange = (value, mode) => {
-        console.log(value.format('YYYY-MM-DD'), mode);
-      };
-    const addDairy = () => {
-        router.push({
-            pathname: "/student/addDairy"
-        })
+    setDataStore(stored ? JSON.parse(stored) : null);
+  }, []);
+  useEffect(() => {
+    if (dataStore === undefined) return;
+    setData(dataStore.data);
+  }, [dataStore]);
+  useEffect(() => {
+    if (data === undefined) return;
+    if (data.userLevelJoin === undefined) {
+      setIsLogin(true);
+    } else {
+      router.back();
     }
-    const onClick = () => {
-        router.push({
-            pathname: "/student/editDairy"
-        })
-    };
+  }, [data]);
 
+  return (
+    <>
+      {isLogin === true && (
+        <div>
+          <StudentNavbar />
+          <header className="bg-white shadow">
+            <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+              <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
+                {data?.title_name + data?.fname_TH + " " + data?.lname_TH}
+              </h3>
+            </div>
+          </header>
 
-
-    return (
-        <>
-            <StudentNavbar />
-            <header className="bg-white shadow">
-                <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-                    <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline"> อัฐพล พลฤทธิ์</h3>
-                    <p className=' text-blue-700 inline'> บริษัท วันม็อบบี้ จำกัด</p>
-                </div>
-            </header>
-            <main>
-                <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                    <div className=' float-right'>
-                        <button type="button" onClick={addDairy} className=" mr-5 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                            ลงบันทึกประจำวัน
-                        </button>
+          <main>
+            <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                <div className="w-full ">
+                  <Link href="/student/calendarDiary">
+                    <div className="w-full px-10">
+                      <Card className="mx-2  h-16 bg-gradient-to-tr from-yellow-300 to-pink-500  hover:bg-gradient-to-bl"></Card>
                     </div>
-                    <Alert message={`วันนี้วันที่ : ${selectedValue?.format('YYYY-MM-DD')}`} className="mx-2" />
-                    <Calendar dateCellRender={dateCellRender} value={value} onSelect={onSelect} onPanelChange={onPanelChange} />
+                    <div className=" w-full -mt-7">
+                      <Card className=" mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ">
+                        <div>
+                          <p className=" text-lg text-center font-bold">
+                            {" "}
+                            <SlidersTwoTone style={{ fontSize: "30px" }} />{" "}
+                            ปฏิทินการลงเวลา
+                          </p>
+                        </div>
+                      </Card>
+                    </div>
+                  </Link>
                 </div>
-            </main>
-
-        </>
-    )
+                <div className="w-full mt-2 ">
+                  <Link href="/student/addInternDetail">
+                    <div className="w-full px-10">
+                      <Card className="mx-2  h-16 bg-gradient-to-tr from-yellow-300 to-pink-500  hover:bg-gradient-to-bl"></Card>
+                    </div>
+                    <div className=" w-full -mt-7">
+                      <Card className=" mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ">
+                        <div>
+                          <p className=" text-lg text-center font-bold">
+                            {" "}
+                            <SlidersTwoTone style={{ fontSize: "30px" }} />
+                            เพิ่มข้อมูลการออกฝึก
+                          </p>
+                        </div>
+                      </Card>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      )}
+    </>
+  );
 }

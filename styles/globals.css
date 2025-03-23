@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  
 }
 
 a {
@@ -21,9 +22,73 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: white;
   }
 }
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.editor-container {
+  background: #fff;
+  margin: 20px auto 20px auto;
+  border-radius: 2px;
+  max-width: 600px;
+  color: #000;
+  position: relative;
+  line-height: 20px;
+  font-weight: 400;
+  text-align: left;
+}
+
+.editor-input {
+  min-height: 150px;
+  resize: none;
+  font-size: 15px;
+  caret-color: rgb(5, 5, 5);
+  position: relative;
+  tab-size: 1;
+  outline: 0;
+  padding: 10px;
+  caret-color: #444;
+}
+
+.editor-placeholder {
+  color: #999;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 10px;
+  left: 10px;
+  font-size: 15px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.editor-paragraph {
+  margin: 0 0 15px 0;
+  position: relative;
+}
+
+.emoticon {
+  color: transparent;
+  background-size: 16px 16px;
+  height: 16px;
+  width: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 1px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.avo-emoticon {
+  background-image: url(/images/avocado_emo.jpeg);
+}
+.editor-paragraph {
+  margin: 0 0 15px 0;
+  position: relative;
+}
+

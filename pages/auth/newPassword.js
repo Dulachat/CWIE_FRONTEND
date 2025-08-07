@@ -22,20 +22,20 @@ function NewPassword() {
             token: token
         }
         const res = await axiosInstance.post('auth/reset-password/', raw)
-    if(res.data === 'success'){
-        messageApi.open({
-            type: 'success',
-            content:"บันทึกสำเร็จ"
-        })
-       setTimeout(()=>{
-        router.push('/auth/login')
-       },1000)
-    }else{
-        messageApi.open({
-            type: 'error',
-            content:"มีข้อผิดพลาด"
-        })
-    }
+        if (res.data === 'success') {
+            messageApi.open({
+                type: 'success',
+                content: "บันทึกสำเร็จ"
+            })
+            setTimeout(() => {
+                router.push('/auth/login')
+            }, 1000)
+        } else {
+            messageApi.open({
+                type: 'error',
+                content: "มีข้อผิดพลาด"
+            })
+        }
     };
 
     return (
@@ -48,7 +48,7 @@ function NewPassword() {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src={"https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"}
+                            src={"/logo.png"}
                             alt="Your Company"
                         />
                         <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-900">

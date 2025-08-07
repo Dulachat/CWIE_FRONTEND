@@ -67,13 +67,12 @@ export default function Login() {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src={"https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"}
-                            alt="Your Company"
+                            src="/logo.png"
                         />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
                             เข้าสู่ระบบ
                         </h2>
-                      
+
                         <h4 className=" font-bold text-red-800 text-center">ระบบสารสนเทศ คณะเทคโนโลยีอุตสาหกรรม</h4>
                         <p className="text-center  text-rose-600 relative">มหาวิทยาลัยราชภัฎเลย</p>
 
@@ -140,9 +139,9 @@ export default function Login() {
                                             เข้าสู่ระบบ
                                         </Button>
                                         <div className='mt-1 text-center underline font-medium '> <Link href={"/auth/resetPassword"}>ลืมรหัสผ่าน</Link></div>
-                                        
+
                                     </div>
-                                   
+
                                 </Form>
                             </Card>
                         </div>

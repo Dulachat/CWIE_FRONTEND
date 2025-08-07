@@ -56,7 +56,6 @@ export default function FormAddMaps(prop) {
       });
   };
 
-
   const handleUpload = (file) => {
     const maxSize = 5 * 1024 * 1024; // 5MB limit
     if (file.size > maxSize) {
@@ -89,9 +88,7 @@ export default function FormAddMaps(prop) {
         <div className="flex justify-center">
           <AuditOutlined style={{ fontSize: "64px", color: "#08c" }} />
         </div>
-        <div className="flex justify-center mt-5">
-          กรุณาเลือกสถานประกอบการณ์
-        </div>
+        <div className="flex justify-center mt-5">กรุณาเลือกสถานประกอบการ</div>
       </div>
     );
   }

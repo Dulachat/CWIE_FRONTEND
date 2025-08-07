@@ -84,6 +84,7 @@ export default function Index() {
       }
     })
   }
+
   return (
     <>
       {contextHolder}
@@ -109,7 +110,7 @@ export default function Index() {
                       <div className=' w-full -mt-7'>
                         <Card className=' mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ' >
                           <div>
-                            <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />  ระบบสหกิจศึกษา</p>
+                            <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} /> ระบบสหกิจศึกษา/ระบบฝึกประสบการณ์วิชาชีพ</p>
                           </div>
                         </Card>
                       </div>
@@ -117,7 +118,7 @@ export default function Index() {
                   </div>
                 }
 
-                {data.userStatus !== "พี่เลี้ยง" &&
+                {data?.userLevelJoin?.level_name !== "พี่เลี้ยง" &&
                   <div className='w-full mt-2 '>
                     <a onClick={ToProIntern}>
                       <div className='w-full px-10'>
@@ -127,7 +128,7 @@ export default function Index() {
                       <div className=' w-full -mt-7'>
                         <Card className=' mx-auto w-11/12 h-20 border-red-400 hover:bg-slate-200 ' >
                           <div>
-                            <p className=' text-lg text-center font-bold'><ContactsTwoTone style={{ fontSize: "30px" }} />  ระบบเตรียมฝึกประสบการณ์วิชาชีพ</p>
+                            <p className=' text-lg text-center font-bold'><ContactsTwoTone style={{ fontSize: "30px" }} />  ระบบเตรียมสหกิจศึกษา/ระบบเตรียมฝึกประสบการณ์วิชาชีพ</p>
                           </div>
                         </Card>
                       </div>

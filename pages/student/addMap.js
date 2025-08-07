@@ -34,7 +34,7 @@ export default function AddMap() {
         <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
           <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
             {" "}
-            เพิ่มแผนที่ สำหรับสถานประกอบการณ์ {data?.JoinCompany?.company_name}
+            เพิ่มแผนที่ สำหรับสถานประกอบการ {data?.JoinCompany?.company_name}
           </h3>
         </div>
       </header>

@@ -15,18 +15,18 @@ export default function DashboardNavbar() {
   const [dataStore, setDataStore] = useState()
   const [data, setData] = useState()
   useEffect(() => {
-      const stored = localStorage.getItem('user');
-      setDataStore(stored ? JSON.parse(stored) : fallbackValue);
+    const stored = localStorage.getItem('user');
+    setDataStore(stored ? JSON.parse(stored) : fallbackValue);
   }, [])
   useEffect(() => {
-      if (dataStore === undefined) return
-      setData(dataStore.data)
+    if (dataStore === undefined) return
+    setData(dataStore.data)
   }, [dataStore])
   useEffect(() => {
-      if (data === undefined) return
-          setIsLogin(true);
+    if (data === undefined) return
+    setIsLogin(true);
   }, [data])
-console.log(data?.userLevelJoin?.level_name)
+
   const navigation = [
     { name: 'Dashboard', href: '/', current: false, key: 'item-1' },
     {
@@ -35,32 +35,32 @@ console.log(data?.userLevelJoin?.level_name)
         data?.userLevelJoin?.level_name === 'อาจารย์'
           ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
           : data?.userLevelJoin?.level_name === 'พี่เลี้ยง'
-          ? 'https://drive.google.com/file/d/1QLEe48O3UqeVtivaWuorwaAsFk3GQdXQ/view?usp=drive_link'
-          : data?.userLevelJoin?.level_name === 'แอดมิน'
-          ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
-          : 'https://drive.google.com/file/d/1Az_3kio-lvut2a0ah6OekCgnMP8zLil-/view?usp=drive_link',
+            ? 'https://drive.google.com/file/d/1QLEe48O3UqeVtivaWuorwaAsFk3GQdXQ/view?usp=drive_link'
+            : data?.userLevelJoin?.level_name === 'แอดมิน'
+              ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
+              : 'https://drive.google.com/file/d/1Az_3kio-lvut2a0ah6OekCgnMP8zLil-/view?usp=drive_link',
       key: 'item-4',
     },
   ];
 
 
   const logout = () => {
-   localStorage.clear();
-   router.push('/auth/login')
+    localStorage.clear();
+    router.push('/auth/login')
   }
   const checkProfile = () => {
     if (data.userLevelJoin !== undefined) {
       router.push({
         pathname: '/profile',
-        query:{
-          uuid:data.uuid
+        query: {
+          uuid: data.uuid
         }
       })
     } else {
       router.push({
         pathname: '/student/studentProfile',
-        query:{
-          uuid:data.uuid
+        query: {
+          uuid: data.uuid
         }
       })
     }
@@ -86,12 +86,12 @@ console.log(data?.userLevelJoin?.level_name)
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/logo.png"
                     alt="Your Company"
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/logo.png"
                     alt="Your Company"
                   />
                 </div>
@@ -129,7 +129,7 @@ console.log(data?.userLevelJoin?.level_name)
                         }
                         alt=""
                       />
-                 
+
                     </Menu.Button>
 
                   </div>

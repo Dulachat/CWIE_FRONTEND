@@ -1,9 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs, Row, message } from 'antd';
-import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/router';
-import axiosInstance from '../../utils/axios'
-import FormEditCompany from './FormEditCompany';
+import React, { useEffect, useState } from "react";
+import {
+  Space,
+  Table,
+  Tag,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Tabs,
+  Row,
+  message,
+} from "antd";
+import {
+  EyeOutlined,
+  SettingOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { useRouter } from "next/router";
+import axiosInstance from "../../utils/axios";
+import FormEditCompany from "./FormEditCompany";
 function GeneralMagTab1() {
   const size = "large";
   const [open, setOpen] = useState(false);
@@ -15,45 +31,39 @@ function GeneralMagTab1() {
   const [dummyState, rerender] = React.useState(1);
   const [id, setId] = useState(null);
   useEffect(() => {
-    axiosInstance.get('company/allCompany')
-      .then(function (response) {
-
-        setData(response.data)
-      })
-  }, [dummyState])
+    axiosInstance.get("company/allCompany").then(function (response) {
+      setData(response.data);
+    });
+  }, [dummyState]);
 
   useEffect(() => {
     rerender(dummyState + 1);
     setOpen(false);
     setOpenEdit(false);
-  }, [router])
+  }, [router]);
 
   useEffect(() => {
-    axiosInstance.get('company/oneCompany/' + id)
-      .then(function (response) {
-        setEditData(response.data)
-      })
-  }, [setId, id])
+    axiosInstance.get("company/oneCompany/" + id).then(function (response) {
+      setEditData(response.data);
+    });
+  }, [setId, id]);
 
   const showModal = () => {
     setOpen(true);
   };
   const handleOk = () => {
     messageApi.open({
-      type: 'success',
-      content: 'เพิ่มข้อมูลเรียบร้อย',
+      type: "success",
+      content: "เพิ่มข้อมูลเรียบร้อย",
     });
     rerender(dummyState + 1);
     setOpen(false);
   };
   const handleCancel = () => {
-
     setOpen(false);
   };
 
-
   const showModalEdit = (id) => {
-
     setId(id);
     setOpenEdit(true);
   };
@@ -67,153 +77,179 @@ function GeneralMagTab1() {
   };
 
   const onDelete = (id) => {
-    axiosInstance.delete('company/deleteCompany/' + id)
+    axiosInstance
+      .delete("company/deleteCompany/" + id)
       .then(function (response) {
         messageApi.open({
-          type: 'success',
-          content: 'ลบข้อมูลเรียบร้อย',
+          type: "success",
+          content: "ลบข้อมูลเรียบร้อย",
         });
-      })
+      });
     rerender(dummyState + 1);
   };
 
   const columns = [
     {
-      title: 'ชื่อสถานประกอบการณ์',
-      dataIndex: 'company_name',
-      key: 'company_name',
+      title: "ชื่อสถานประกอบการ",
+      dataIndex: "company_name",
+      key: "company_name",
     },
     {
-      title: 'เบอร์โทรศัพท์',
-      dataIndex: 'company_tel',
-      key: 'company_tel',
+      title: "เบอร์โทรศัพท์",
+      dataIndex: "company_tel",
+      key: "company_tel",
     },
     {
-      title: 'ที่อยู่สถานประกอบการณ์',
-      dataIndex: 'company_address',
-      key: 'company_address',
+      title: "ที่อยู่สถานประกอบการ",
+      dataIndex: "company_address",
+      key: "company_address",
     },
     {
-      title: 'แก้ไข',
-      key: 'actionEdit',
+      title: "แก้ไข",
+      key: "actionEdit",
       width: "10%",
       render: (_, record) => (
-        <Button icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={() => showModalEdit(record.id)} type="primary">
+        <Button
+          icon={<SettingOutlined />}
+          className={" bg-yellow-300"}
+          onClick={() => showModalEdit(record.id)}
+          type="primary"
+        >
           Edit
         </Button>
       ),
     },
     {
-      title: 'ลบ',
-      key: 'actionDelete',
+      title: "ลบ",
+      key: "actionDelete",
       width: "10%",
       render: (_, record) => (
-        <Button icon={<DeleteOutlined />} onClick={(e) => { if (window.confirm("ยืนยันการลบข้อมูล")) { onDelete(record.id) } }} className={'bg-red-600'} type="primary">
+        <Button
+          icon={<DeleteOutlined />}
+          onClick={(e) => {
+            if (window.confirm("ยืนยันการลบข้อมูล")) {
+              onDelete(record.id);
+            }
+          }}
+          className={"bg-red-600"}
+          type="primary"
+        >
           Delete
         </Button>
       ),
     },
   ];
 
-
   const sendData = (value) => {
-
-    const axios = require('axios');
+    const axios = require("axios");
     let data = JSON.stringify({
-      "company_name": value.company_name,
-      "company_address": value.company_address,
-      "company_tel": value.company_tel
-
+      company_name: value.company_name,
+      company_address: value.company_address,
+      company_tel: value.company_tel,
     });
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
       url: process.env.NEXT_PUBLIC_API_URL + "company/createCompany",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      data: data
+      data: data,
     };
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
-
         if (response.data === "error") {
           messageApi.open({
-            type: 'error',
-            content: 'มีข้อมูลนี้แล้ว',
+            type: "error",
+            content: "มีข้อมูลนี้แล้ว",
           });
         }
         if (response.data === "success") {
-          { handleOk() }
+          {
+            handleOk();
+          }
         }
-      }
-      )
+      })
       .catch((error) => console.log(error));
-
-  }
+  };
 
   return (
     <>
       {contextHolder}
-      <div className='w-full '>
-        <div className='mr-5 float-right'>
-          <button type="button" onClick={showModal} className="  text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-            เพิ่มสถานประกอบการณ์
+      <div className="w-full ">
+        <div className="mr-5 float-right">
+          <button
+            type="button"
+            onClick={showModal}
+            className="  text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          >
+            เพิ่มสถานประกอบการ
           </button>
         </div>
-        <div className='w-full'>
-          <label>รายชื่อสถานประกอบการณ์</label>
-          <Table columns={columns} dataSource={data} pagination={5} style={{ overflow: "auto" }} />
+        <div className="w-full">
+          <label>รายชื่อสถานประกอบการ</label>
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={5}
+            style={{ overflow: "auto" }}
+          />
         </div>
-      </div  >
+      </div>
 
       {/* //Add content */}
       <Modal
         width={"90%"}
         open={open}
-        title="เพิ่มข้อมูลสถานประกอบการณ์"
+        title="เพิ่มข้อมูลสถานประกอบการ"
         onOk={handleOk}
         onCancel={handleCancel}
         key={"addCompany"}
-        footer={[
-
-        ]}
+        footer={[]}
       >
-        <Form name='addCompany' layout="inline" onFinish={sendData}>
-
-          <div className='w-full'>
-            <label>ชื่อสถานประกอบการณ์</label>
-            <Form.Item name="company_name"
+        <Form name="addCompany" layout="inline" onFinish={sendData}>
+          <div className="w-full">
+            <label>ชื่อสถานประกอบการ</label>
+            <Form.Item
+              name="company_name"
               rules={[{ require: true, message: "กรอกข้อมูลให้ครบ" }]}
             >
-              <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+              <Input className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
             </Form.Item>
           </div>
-          <div className='w-1/2'>
+          <div className="w-1/2">
             <label>เบอร์โทรศัพท์</label>
-            <Form.Item name="company_tel" >
-              <Input className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+            <Form.Item name="company_tel">
+              <Input className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
             </Form.Item>
           </div>
-          <div className='w-1/2'>
+          <div className="w-1/2">
             <label>e-mail</label>
-            <Form.Item name="company_email" >
-              <Input type='email' className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+            <Form.Item name="company_email">
+              <Input
+                type="email"
+                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
             </Form.Item>
           </div>
-          <div className='w-full'>
+          <div className="w-full">
             <label>ที่อยู่บริษัท</label>
-            <Form.Item name="company_address" >
+            <Form.Item name="company_address">
               <Input.TextArea style={{ height: 100 }} />
             </Form.Item>
           </div>
 
-          <div className='w-full mt-2'>
-            <Button className=" text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" htmlType='submit' block size={size}>
+          <div className="w-full mt-2">
+            <Button
+              className=" text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              htmlType="submit"
+              block
+              size={size}
+            >
               บันทึกข้อมูล
             </Button>
           </div>
-
         </Form>
       </Modal>
 
@@ -222,25 +258,16 @@ function GeneralMagTab1() {
       <Modal
         width={"90%"}
         open={openEdit}
-        title="แก้ไขสถานประกอบการณ์"
+        title="แก้ไขสถานประกอบการ"
         onOk={handleOkEdit}
         onCancel={handleCancelEdit}
         key={id}
-        footer={[
-
-        ]}
+        footer={[]}
       >
         <FormEditCompany data={dataEdit} />
-
       </Modal>
-
-
     </>
-
-
-
-  )
+  );
 }
 
-
-export default GeneralMagTab1
+export default GeneralMagTab1;

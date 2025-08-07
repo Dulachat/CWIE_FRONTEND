@@ -6,8 +6,9 @@ import axiosInstance from "../../utils/axios";
 import { useRouter } from "next/router";
 
 export default function FormEditDiary(props) {
+
   const router = useRouter();
-  const [items, setItem] = useState();
+  const items =props.data
   const [isLogin, setIsLogin] = useState(false);
   const [data, setData] = useState(undefined);
   const [dateUpdate, setDate] = useState(null);
@@ -35,9 +36,6 @@ export default function FormEditDiary(props) {
       });
     }, 500);
   };
-  useEffect(() => {
-    setItem(props.data);
-  }, [props]);
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
@@ -114,7 +112,7 @@ export default function FormEditDiary(props) {
     let config = {
       method: "patch",
       maxBodyLength: Infinity,
-      url: process.env.NEXT_PUBLIC_API_URL + "Diary/updateDairy/" + dateUpdate,
+      url:`${process.env.NEXT_PUBLIC_API_URL}Diary/updateDairy/${dateUpdate}/${dataUser.id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -129,85 +127,107 @@ export default function FormEditDiary(props) {
       })
       .catch((error) => console.log(error));
   };
- if(!detail_text) return
+  const handleSaveOriginalPath = (path) => {
+    // Implement the logic to save originalPath here
+    console.log("Original Path:", path);
+  };
+
   return (
     <>
       {contextHolder}
-      <Form layout="inline" onFinish={onFinish} key={items?.id}>
-        {items?.diary_comment !== "" && (
+      {items && 
+       <Form layout="inline" onFinish={onFinish} key={items?.id}>
+       {items?.diary_comment !== "" && (
+        <>
+           <div className="w-full mt-2">
+           <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+             {" "}
+             คำแนะนำจากอาจารย์ <span className="text-red-600">*</span>
+           </label>
+           <Form.Item
+             name={"diary_comment"}
+             initialValue={items?.diary_comment}
+           >
+             <Input.TextArea readOnly style={{ height: 50 }} />
+           </Form.Item>
+         </div>
           <div className="w-full mt-2">
-            <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-              {" "}
-              คำแนะนำจากอาจารย์ <span className="text-red-600">*</span>
-            </label>
-            <Form.Item
-              name={"diary_comment"}
-              initialValue={items?.diary_comment}
-            >
-              <Input.TextArea readOnly style={{ height: 50 }} />
-            </Form.Item>
-          </div>
-        )}
-        <div className="w-full mt-2">
           <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-            รายการปฏิบัติงานประจำวันที่
-            <Form.Item
-              name={"diary_date"}
-              rules={[{ required: true, message: "เลือกวันที่" }]}
-              initialValue={items?.diary_date}
-            >
-              <Input
-                onChange={(e) => onSelectDate(e.target.value)}
-                type="date"
-                readOnly
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </Form.Item>
+            {" "}
+            คำแนะนำจากพี่เลี้ยง <span className="text-red-600">*</span>
           </label>
+          <Form.Item
+            name={"diary_comment"}
+            initialValue={items?.diary_comment2}
+          >
+            <Input.TextArea readOnly style={{ height: 50 }} />
+          </Form.Item>
         </div>
+        </>
+      
+       )}
+       <div className="w-full mt-2">
+         <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+           รายการปฏิบัติงานประจำวันที่
+           <Form.Item
+             name={"diary_date"}
+             rules={[{ required: true, message: "เลือกวันที่" }]}
+             initialValue={items?.diary_date}
+           >
+             <Input
+               onChange={(e) => onSelectDate(e.target.value)}
+               type="date"
+               readOnly
+               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+             />
+           </Form.Item>
+         </label>
+       </div>
 
-        <div className="w-full mt-2">
-          <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-            {" "}
-            เวลาเข้างาน
-            <Form.Item
-              name={"time_in"}
-              rules={[{ required: true, message: "กรอกเวลาเข้างาน" }]}
-              initialValue={items?.time_in}
-            >
-              <Input
-                type="time"
-                value={items?.time_in}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </Form.Item>
-          </label>
-        </div>
-        <div className=" w-full mt-2">
-          <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-            {" "}
-            เวลาออกงาน
-            <Form.Item
-              name={"time_out"}
-              rules={[{ required: true, message: "กรอกเวลาออกงาน" }]}
-              initialValue={items?.time_out}
-            >
-              <Input
-                type="time"
-                value={items?.time_out}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </Form.Item>
-          </label>
-        </div>
-        <div className="w-full">
-          <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-            {" "}
-            รายละเอียด{" "}
-          </label>
-          <MyEditorEdit data={detail_text} />
-        </div>
-      </Form>
+       <div className="w-full mt-2">
+         <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+           {" "}
+           เวลาเข้างาน
+           <Form.Item
+             name={"time_in"}
+             rules={[{ required: true, message: "กรอกเวลาเข้างาน" }]}
+             initialValue={items?.time_in}
+           >
+             <Input
+               type="time"
+               value={items?.time_in}
+               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+             />
+           </Form.Item>
+         </label>
+       </div>
+       <div className=" w-full mt-2">
+         <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+           {" "}
+           เวลาออกงาน
+           <Form.Item
+             name={"time_out"}
+             rules={[{ required: true, message: "กรอกเวลาออกงาน" }]}
+             initialValue={items?.time_out}
+           >
+             <Input
+               type="time"
+               value={items?.time_out}
+               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+             />
+           </Form.Item>
+         </label>
+       </div>
+       <div className="w-full">
+         <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+           {" "}
+           สรุปรายละเอียดการทำงาน{" "}
+         </label>
+         <MyEditorEdit data={detail_text}  onSaveOriginalPath={handleSaveOriginalPath} />
+       </div>
+     </Form>
+      }
+     
     </>
   );
 }

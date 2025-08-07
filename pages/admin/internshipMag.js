@@ -9,7 +9,8 @@ export default function InternshipMag(key) {
   const iconSize = "large"
 
   const onChange = (key) => {
-    
+
+
   };
   const items = [
     {

@@ -8,15 +8,9 @@ import { useRouter } from 'next/router';
 
 
 export default function ListDiaryDetail() {
-    const size = "large"
     const router = useRouter();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-    const [openAdd, setOpenAdd] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
     const [id, setId] = useState();
-    const [selectedOption, setSelectedOption] = useState(null);
     const [data, setData] = useState();
     const [dataDiary, setDataDiary] = useState();
     const [searchText , setSearchText] =useState("")
@@ -127,12 +121,13 @@ export default function ListDiaryDetail() {
                 open={open}
                 title="Information"
                 onOk={handleOk}
+                key={dataDiary?.id}
                 onCancel={handleCancel}
                 footer={[
                 ]}
 
             >
-                <FormInfoDiary data={dataDiary} />
+                <FormInfoDiary data={dataDiary}/>
             </Modal>
 
 

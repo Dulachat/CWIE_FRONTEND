@@ -21,7 +21,7 @@ export default function FormAddDiary() {
                 pathname: "/student/calendarDiary",
                 query: { reload: 1 }
             })
-        }, 500)
+        }, 1500)
 
     }
     useEffect(() => {
@@ -33,6 +33,7 @@ export default function FormAddDiary() {
         setData(dataStore.data)
     }, [dataStore])
 
+
     const onSelectDate = (date) => {
         const axios = require('axios');
         let raw = JSON.stringify({
@@ -42,7 +43,7 @@ export default function FormAddDiary() {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: process.env.NEXT_PUBLIC_API_URL+"Diary/addDiary",
+            url: process.env.NEXT_PUBLIC_API_URL+`Diary/addDiary/${data.id}`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -54,7 +55,6 @@ export default function FormAddDiary() {
             .catch((error) => console.log(error));
 
     }
-
     const onFinish = (value) => {  //updateDairy/:date
         const dataTest = document.getElementsByClassName('ql-editor')
         const axios = require('axios');
@@ -66,7 +66,7 @@ export default function FormAddDiary() {
         let config = {
             method: 'patch',
             maxBodyLength: Infinity,
-            url: process.env.NEXT_PUBLIC_API_URL + "Diary/updateDairy/" + dateUpdate,
+            url: process.env.NEXT_PUBLIC_API_URL + `Diary/updateDairy/${dateUpdate}/${data.id}`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -77,7 +77,6 @@ export default function FormAddDiary() {
             .catch((error) => console.log(error));
 
     }
-
 
     return (
         <>{contextHolder}
@@ -119,16 +118,9 @@ export default function FormAddDiary() {
                     </label>
                 </div>
                 <div className='w-full'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> รายละเอียด </label>
-
+                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> สรุปรายละเอียดการทำงาน </label>
                     <MyEditor />
-
-
                 </div>
-
-
-
-
             </Form>
         </>
     )

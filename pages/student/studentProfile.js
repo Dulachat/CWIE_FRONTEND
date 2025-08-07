@@ -18,7 +18,9 @@ export default function StudentProfile() {
 
   useEffect(() => {
     if (uuid === undefined) return;
+    console.log("uuid", uuid);
     axiosInstance.get("student/oneStudentUid/" + uuid).then((res) => {
+      console.log("res", res);
       setData(res.data);
       localStorage.setItem("user", JSON.stringify(res));
     });

@@ -21,9 +21,6 @@ const size = "large";
 import axiosInstance from "../../utils/axios";
 
 export default function InternTabs1(key) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [switchStatus, setStatus] = useState(false);
@@ -208,6 +205,10 @@ export default function InternTabs1(key) {
   };
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
+  const years = range(2023, new Date().getFullYear() + 1, 1);
+  function range(start, end) {
+    return new Array(end - start).fill().map((d, i) => i + start + 543);
+  }
   const yearTermOptions = [
     { value: `1/${currentYear + 543}`, label: `1/${currentYear + 543}` },
     { value: `2/${currentYear + 543}`, label: `2/${currentYear + 543}` },
@@ -268,7 +269,18 @@ export default function InternTabs1(key) {
               ปีการศึกษา
               <Form.Item
                 name={"yearTerm"}
-                rules={[{ required: true, message: "กรุณากรอก ปีการศึกษา" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอก ปีการศึกษา",
+                    min: 6,
+                    max: 6,
+                  },
+                  {
+                    pattern: "\\b[1-3]{1}/\\d{4}\\b",
+                    message: "กรุณากรอก ปีการศึกษาให้ถูกต้อง",
+                  },
+                ]}
               >
                 <Input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
               </Form.Item>
@@ -352,7 +364,21 @@ export default function InternTabs1(key) {
                 rules={[{ required: true, message: "กรุณาเลือก ปีการศึกษา" }]}
                 initialValue={dataEdit.yearTerm}
               >
-                <Select options={yearTermOptions} key={key} size={size} />
+                <Select key={key} size={size}>
+                  {years.map((item) => (
+                    <>
+                      <Select.Option key={`1/${item}`} value={`1/${item}`}>
+                        1/{item}
+                      </Select.Option>
+                      <Select.Option key={`2/${item}`} value={`2/${item}`}>
+                        2/{item}
+                      </Select.Option>
+                      <Select.Option key={`3/${item}`} value={`3/${item}`}>
+                        3/{item}
+                      </Select.Option>
+                    </>
+                  ))}
+                </Select>
               </Form.Item>
             </label>
           </div>

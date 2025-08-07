@@ -12,10 +12,6 @@ import FormEditUser from '../components/FormEditUser';
 const size = "large"
 export default function UserMag() {
     const router = useRouter();
-    const iconSize = "large"
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
     const [openAdd, setOpenAdd] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [data, setData] = useState([]);
@@ -88,18 +84,6 @@ export default function UserMag() {
                 <p>{text.userLevelJoin.level_name}</p>
             ,
         },
-        // {
-        //     title: 'ดูข้อมูล',
-        //     key: 'actionInfo',
-        //     width: "10%",
-        //     render: (_, record) => (
-
-        //         <Button icon={<EyeOutlined />} className={' bg-sky-500'} onClick={showModal} type="primary">
-        //             Info
-        //         </Button>
-
-        //     ),
-        // },
         {
             title: 'แก้ไข',
             key: 'actionEdit',

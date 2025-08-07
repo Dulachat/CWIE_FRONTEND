@@ -21,9 +21,6 @@ import {
 import axiosInstance from "../../utils/axios";
 const size = "large";
 export default function InternTabs2() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [companyData, setCompanyData] = useState([]);
@@ -35,6 +32,8 @@ export default function InternTabs2() {
   const [dummyState, rerender] = React.useState(1);
   const [dataEdit, setDataEdit] = useState([]);
   const [data, setData] = useState([]);
+  const [headerData, setHeader] = useState(undefined);
+  const [headerSelection, setHeaderSelection] = useState();
   const messageError = () => {
     messageApi.open({
       type: "error",
@@ -62,13 +61,10 @@ export default function InternTabs2() {
       .then(function (response) {
         setInternData(response.data);
       });
-  }, []);
-  useEffect(() => {
     axiosInstance.get("company/allCompany").then(function (response) {
       setCompanyData(response.data);
     });
   }, []);
-
   useEffect(() => {
     axiosInstance
       .get("users/getSelect/" + selectUserData.branch_id)
@@ -76,21 +72,17 @@ export default function InternTabs2() {
         setUserData(response.data);
       });
   }, [selectUserData]);
-
   useEffect(() => {
-    axiosInstance.get("student/allStudentIntern").then(function (response) {
+    axiosInstance.get(`student/allStudentIntern`).then(function (response) {
       setStudentData(response.data);
     });
-  }, [dummyState]);
-
-  useEffect(() => {
     axiosInstance
-      .get("assessment/getDetail")
+      .get(`assessment/getDetail?header=${headerSelection}`)
       .then((res) => {
         setData(res.data);
       })
       .catch((err) => console.log(err));
-  }, [dummyState]);
+  }, [dummyState, headerSelection]);
   const columns = [
     {
       title: "No.",
@@ -122,7 +114,7 @@ export default function InternTabs2() {
       ),
     },
     {
-      title: "ชื่อสถานประกอบการณ์",
+      title: "ชื่อสถานประกอบการ",
       key: "user2",
       render: (data) => <span>{data.JoinCompany.company_name}</span>,
     },
@@ -164,6 +156,22 @@ export default function InternTabs2() {
   const handleOkAdd = () => {
     setOpenAdd(false);
   };
+
+  const selectYear = (term) => {
+    axiosInstance
+      .get(`assessment/getHeader?status=1&term=${term}`)
+      .then((res) => {
+        if (res.data.length > 0) {
+          setHeader(res.data);
+          setHeaderSelection(res?.data[0]?.id);
+        } else {
+          setHeader();
+          setHeaderSelection();
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleCancelAdd = () => {
     setOpenAdd(false);
   };
@@ -178,7 +186,10 @@ export default function InternTabs2() {
   const handleCancelEdit = () => {
     setOpenEdit(false);
   };
-
+  const years = range(2023, new Date().getFullYear() + 1, 1);
+  function range(start, end) {
+    return new Array(end - start).fill().map((d, i) => i + start + 543);
+  }
   const sendData = (value) => {
     const axios = require("axios");
     let data = JSON.stringify({
@@ -257,23 +268,64 @@ export default function InternTabs2() {
         });
       });
   };
-
-  console.log(dataEdit);
-
   return (
     <div>
       {contextHolder}
       <div key={"undefined3"}>
-        <div className="w-full">
-          <div className=" float-right">
-            <button
-              type="button"
-              onClick={showModalAdd}
-              className="mr-5 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-            >
-              จัดการผู้ประเมินนักศึกษา
-            </button>
+        <div className="w-full grid">
+          <div className=""></div>
+          <div>
+            <div className=" float-right">
+              <button
+                type="button"
+                onClick={showModalAdd}
+                className="mr-4 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                จัดการผู้ประเมินนักศึกษา
+              </button>
+            </div>
+            <div className=" float-left">
+              <label className="mr-2">ปีการศึกษา :</label>
+              <Select
+                size="large"
+                defaultValue={`1/${years[0]}`}
+                className="mr-5 mb-2"
+                onChange={(e) => selectYear(e)}
+              >
+                {years.map((item) => (
+                  <>
+                    <Select.Option key={`1/${item}`} value={`1/${item}`}>
+                      1/{item}
+                    </Select.Option>
+                    <Select.Option key={`2/${item}`} value={`2/${item}`}>
+                      2/{item}
+                    </Select.Option>
+                    <Select.Option key={`3/${item}`} value={`3/${item}`}>
+                      3/{item}
+                    </Select.Option>
+                  </>
+                ))}
+              </Select>
+            </div>
+            {headerData && (
+              <div className=" float-left">
+                <label className="mr-2">รายการออกฝึก :</label>
+                <Select
+                  size="large"
+                  defaultValue={headerData[0].id}
+                  className="mr-5 mb-2"
+                  onChange={(e) => setHeaderSelection(e)}
+                >
+                  {headerData.map((item) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.assessment_name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </div>
+            )}
           </div>
+
           <Table
             rowKey={(obj) => obj.id}
             columns={columns}
@@ -354,11 +406,11 @@ export default function InternTabs2() {
 
             <div className="w-full ">
               <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-                เลือกสถานประกอบการณ์
+                เลือกสถานประกอบการ
                 <Form.Item
                   name={"company_id"}
                   rules={[
-                    { required: true, message: "กรุณาเลือกสถานประกอบการณ์" },
+                    { required: true, message: "กรุณาเลือกสถานประกอบการ" },
                   ]}
                 >
                   <Select size={size}>
@@ -407,12 +459,14 @@ export default function InternTabs2() {
                   rules={[{ required: true, message: "กรุณาเลือกการออกฝึก" }]}
                 >
                   <Select size={size} defaultValue={dataEdit.header_id}>
-                    {internData.map((item)=>
-                         <Select.Option value={item.id} key={`header_id_`+item.id}>
-                         {item.assessment_name}
-                       </Select.Option>
-                    )}
-               
+                    {internData.map((item) => (
+                      <Select.Option
+                        value={item.id}
+                        key={`header_id_` + item.id}
+                      >
+                        {item.assessment_name}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Form.Item>
               </div>
@@ -426,7 +480,11 @@ export default function InternTabs2() {
                     ]}
                     initialValue={dataEdit.JoinStudent.id}
                   >
-                    <Select size={size} defaultValue={dataEdit.JoinStudent.id} disabled>
+                    <Select
+                      size={size}
+                      defaultValue={dataEdit.JoinStudent.id}
+                      disabled
+                    >
                       <Select.Option value={dataEdit.JoinStudent.id}>
                         {dataEdit.JoinStudent.fname_TH +
                           " " +
@@ -465,11 +523,11 @@ export default function InternTabs2() {
 
               <div className="w-full ">
                 <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
-                  เลือกสถานประกอบการณ์
+                  เลือกสถานประกอบการ
                   <Form.Item
                     name={"company_id"}
                     rules={[
-                      { required: true, message: "กรุณาเลือกสถานประกอบการณ์" },
+                      { required: true, message: "กรุณาเลือกสถานประกอบการ" },
                     ]}
                     initialValue={dataEdit.JoinCompany.id}
                   >

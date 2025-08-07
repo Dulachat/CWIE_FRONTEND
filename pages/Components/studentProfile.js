@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  Space,
-  Table,
-  Tag,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Select,
-  message,
-} from "antd";
+import React from "react";
+import { Button, Form, Input, Select, message } from "antd";
+import { useRouter } from "next/router";
 
 export default function FormEditStudentProfile(props) {
   const size = "large";
   const [messageApi, contextHolder] = message.useMessage();
+  const router = useRouter();
   const data = props.data;
 
   const messageUp = () => {
@@ -22,10 +14,10 @@ export default function FormEditStudentProfile(props) {
       content: "แก้ไขข้อมูลเรียบร้อย",
     });
   };
+  const axios = require("axios");
+
   const sendData = (value) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({
+    const rawData = {
       address_no: value.address_no,
       age: value.age,
       dateofbirth: value.dateofbirth,
@@ -54,26 +46,27 @@ export default function FormEditStudentProfile(props) {
       intern_status: value.intern_status,
       tel: value.tel,
       year_class: value.year_class,
-    });
-    var requestOptions = {
-      method: "PATCH",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
     };
-    fetch(
-      process.env.NEXT_PUBLIC_API_URL + "student/updateStudent/" + data.id,
-      requestOptions
-    )
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_API_URL}student/updateStudent/${data.id}/${data.uuid}`,
+        rawData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
-        if (response.data === "success") {
-          localStorage.setItem("user", JSON.stringify(response));
-        } 
+        console.log(response);
+        if (response.data.success === true) {
+          messageUp();
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
+        }
       })
-      .then((result) => {
-        messageUp();
-      })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.error("Error:", error));
   };
 
   return (

@@ -47,7 +47,7 @@ export default function FormList() {
                                         <div className=' w-full -mt-7'>
                                             <Card className=' mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ' >
                                                 <div>
-                                                    <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />  IN-TP08</p>
+                                                    <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />แบบประเมินผลการนิเทศของอาจารย์นิเทศ</p>
                                                 </div>
                                             </Card>
                                         </div>
@@ -64,7 +64,7 @@ export default function FormList() {
                                         <div className=' w-full -mt-7'>
                                             <Card className=' mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ' >
                                                 <div>
-                                                    <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />  IN-TP09</p>
+                                                    <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />แบบประเมินผลการปฏิบัติงานของผู้นิเทศประจำหน่วยงาน</p>
                                                 </div>
                                             </Card>
                                         </div>

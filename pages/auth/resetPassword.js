@@ -27,12 +27,12 @@ function ResetPassword() {
                     pathname: '/auth/newPassword',
                     query: {
                         passReq: res.data.token,
-                        uuid:res.data.uuid,
-                        type:res.data.type
+                        uuid: res.data.uuid,
+                        type: res.data.type
                     }
                 })
             }, 1000)
-        }else{
+        } else {
             throw new Error()
         }
     };
@@ -46,7 +46,7 @@ function ResetPassword() {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src={"https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"}
+                            src={"/logo.png"}
                             alt="Your Company"
                         />
                         <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-900">

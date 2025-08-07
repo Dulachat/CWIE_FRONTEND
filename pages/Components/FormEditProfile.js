@@ -22,10 +22,10 @@ export default function FormEditProfile(props) {
     }
 
     useEffect(() => {
-  
+        
         setData(props.data)
     }, [props])
-  
+  console.log(props)
     const sendData = (value) => {
         const axios = require('axios');
         let raw = JSON.stringify({

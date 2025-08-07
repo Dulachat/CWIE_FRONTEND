@@ -12,6 +12,7 @@ export default function UserNavbar() {
   const [isLogin, setIsLogin] = useState(false);
   const [dataStore, setDataStore] = useState();
   const [data, setData] = useState();
+  const [navigation, setNavigation] = useState([]);
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored === null) {
@@ -26,21 +27,36 @@ export default function UserNavbar() {
   }, [dataStore]);
   useEffect(() => {
     if (data === undefined) return;
+    if (data.userLevelJoin.level_name === "พี่เลี้ยง") {
+      navigation.push([])
+      navigation.push(
+        { name: "Dashboard", href: "/", current: false, key: "item-1" },
+        {
+          name: "คู่มือการใช้งาน",
+          href: "https://drive.google.com/file/d/1QLEe48O3UqeVtivaWuorwaAsFk3GQdXQ/view?usp=drive_link",
+          key: "item-2",
+        }
+      );
+    } else {
+      navigation.push([])
+      navigation.push(
+        { name: "Dashboard", href: "/", current: false, key: "item-1" },
+        {
+          name: "ระบบสหกิจศึกษา",
+          href: "/users",
+          current: false,
+          key: "item-2",
+        },
+        { name: "ระบบเตรียมฝึก", href: "/", current: false, key: "item-3" },
+        {
+          name: "คู่มือการใช้งาน",
+          href: "https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link",
+          key: "item-4",
+        },
+      );
+    }
     setIsLogin(true);
   }, [data]);
-
-  const navigation = [
-    { name: "Dashboard", href: "/", current: false, key: "item-1" },
-    { name: "ระบบสหกิจศึกษา", href: "/users", current: false, key: "item-2" },
-    { name: "ระบบเตรียมฝึก", href: "/", current: false, key: "item-3" },
-    {
-      name: 'คู่มือการใช้งาน',
-      href: data?.userLevelJoin?.level_name === 'อาจารย์'  
-      ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link' 
-      : 'https://drive.google.com/file/d/1QLEe48O3UqeVtivaWuorwaAsFk3GQdXQ/view?usp=drive_link',
-      key: 'item-4',
-    },
-  ];
   const logout = () => {
     localStorage.clear();
     router.push("/auth/login");
@@ -77,13 +93,13 @@ export default function UserNavbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    src="/logo.png"
+
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    src="/logo.png"
+
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">

@@ -1,5 +1,5 @@
 import { Card, Form, Input, Button, Select } from 'antd'
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import FormRegister from './components/FormRegister'
 export default function register() {
     const size = "large"
@@ -10,7 +10,7 @@ export default function register() {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                            src="/logo.png"
                             alt="Your Company"
                         />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
@@ -27,7 +27,7 @@ export default function register() {
             </div>
             <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                 <Card style={{ width: "90%" }}>
-                  <FormRegister/>
+                    <FormRegister />
                 </Card>
             </div>
         </>

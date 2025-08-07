@@ -22,6 +22,7 @@ export default function Profile() {
     axiosInstance
       .get("users/oneUsersByUid/" + uuid)
       .then((res) => {
+        console.log(res)
         setData(res.data);
         localStorage.setItem("user", JSON.stringify(res));
       })

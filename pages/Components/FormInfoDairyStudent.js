@@ -79,7 +79,7 @@ export default function FormInfoDiaryStudent() {
                     </label>
                 </div>
                 <div className='w-full'>
-                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> รายละเอียด
+                    <label className="block mb-2 text-sm font-medium text-gray-900  dark:text-white"> สรุปรายละเอียดการทำงาน
                         <Form.Item name={"diary_detail"} >
                             <Input.TextArea style={{ height: 100 }} disabled />
                         </Form.Item>

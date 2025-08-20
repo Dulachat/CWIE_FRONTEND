@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../Components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
 import FormAddStudent from '../components/FormAddStudent';
@@ -31,7 +31,7 @@ export default function StudentMag(props) {
     useEffect(() => {
         axiosInstance.get('student/allStudent')
             .then(function (response) {
-               
+
                 setData(response.data)
             })
     }, [dummyState])
@@ -81,7 +81,7 @@ export default function StudentMag(props) {
                 if (record === null) {
                     return <p key={record.branchJoin.branch_name}>ผู้ดูแลระบบ</p>
                 } else {
-                  return  <p key={record.branchJoin.branch_name}>{record.branchJoin.branch_name}</p>
+                    return <p key={record.branchJoin.branch_name}>{record.branchJoin.branch_name}</p>
                 }
 
 
@@ -94,7 +94,7 @@ export default function StudentMag(props) {
             width: "10%",
             render: (_, record) => (
 
-                <Button key={'buttonEdit'} icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={()=> showModalEdit(record.id)} type="primary">
+                <Button key={'buttonEdit'} icon={<SettingOutlined />} className={' bg-yellow-300'} onClick={() => showModalEdit(record.id)} type="primary">
                     Edit
                 </Button>
 
@@ -180,12 +180,12 @@ export default function StudentMag(props) {
                         />
                     </div>
                     <div className='w-full'>
-                    <Table key={'table'} columns={columns} rowKey={obj => obj.id} dataSource={data} style={{ overflow: "auto" }} />
+                        <Table key={'table'} columns={columns} rowKey={obj => obj.id} dataSource={data} style={{ overflow: "auto" }} />
                     </div>
-                    
+
                 </div>
             </main>
-      
+
             {/* //Add content */}
             <Modal
                 key={"add"}

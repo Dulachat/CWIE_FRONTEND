@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../Components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
 import InternTabs1 from '../components/InternTabs1';
@@ -18,11 +18,11 @@ export default function InternshipMag(key) {
       label: `การประเมิน`,
       children: <InternTabs1 key={key} />
     },
-    {
-      key: '3',
-      label: `จัดการผู้ประเมินนักศึกษา`,
-      children: <InternTabs2 key={key} />,
-    },
+    // {
+    //   key: '3',
+    //   label: `จัดการผู้ประเมินนักศึกษา`,
+    //   children: <InternTabs2 key={key} />,
+    // },
   ];
 
   return (

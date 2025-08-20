@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 import { Tabs } from "antd";
 import {
   EyeOutlined,
@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import GeneralMagTab2 from "../components/GeneralMagTab2";
 import GeneralMagTab1 from "../components/GeneralMagTab1";
+import UserCompany from "../Components/UserCompany";
 
 export default function GeneralMag() {
   const onChange = (key) => {
@@ -23,6 +24,11 @@ export default function GeneralMag() {
       key: "2",
       label: `จัดการข้อมูลสาขาวิชา`,
       children: <GeneralMagTab2 />,
+    },
+    {
+      key: "3",
+      label: `จัดการข้อมูลผู้ใช้สำหรับสถานประกอบการ`,
+      children: <UserCompany />,
     },
   ];
 

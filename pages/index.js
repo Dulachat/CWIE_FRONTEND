@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import DashboardNavbar from './components/DashboardNavbar'
 import { ContainerTwoTone, ContactsTwoTone } from '@ant-design/icons'
+import SelectInternCompanyModal from './Components/SelectInternCompanyModal'
 export default function Index() {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
@@ -12,6 +13,7 @@ export default function Index() {
   const [userStatus, setUserStatus] = useState()
   const [data, setData] = useState()
   const [usersType, setUserType] = useState("")
+  const [open, setOpen] = useState(false)
   useEffect(() => {
     const stored = localStorage.getItem('user');
     if (stored === null) {
@@ -69,12 +71,7 @@ export default function Index() {
       router.push('/student')
     }
   }
-  const comingSoon = () => {
-    messageApi.open({
-      type: 'warning',
-      content: 'COMING SOON',
-    }, 2000);
-  }
+
   const ToProIntern = () => {
     router.push({
       pathname: `${process.env.NEXT_PUBLIC_WEB_URL_PRE}`,
@@ -84,6 +81,8 @@ export default function Index() {
       }
     })
   }
+
+  console.log("data", data)
 
   return (
     <>
@@ -118,6 +117,8 @@ export default function Index() {
                   </div>
                 }
 
+
+
                 {data?.userLevelJoin?.level_name !== "พี่เลี้ยง" &&
                   <div className='w-full mt-2 '>
                     <a onClick={ToProIntern}>
@@ -136,15 +137,35 @@ export default function Index() {
                   </div>
                 }
 
-             
+
+                {data.student_id &&
+                  <div className='w-full mt-2'>
+                    <a onClick={() => setOpen(true)}>
+                      <div className='w-full px-10'>
+                        <Card className='mx-2  h-16 bg-gradient-to-tr from-yellow-300 to-pink-500  hover:bg-gradient-to-bl'>
+                        </Card>
+                      </div>
+                      <div className=' w-full -mt-7'>
+                        <Card className=' mx-auto w-11/12 h-20  border-red-400  hover:bg-slate-200 ' >
+                          <div>
+                            <p className=' text-lg text-center font-bold'> <ContainerTwoTone style={{ fontSize: "30px" }} />เลือกสถานประกอบการณ์</p>
+                          </div>
+                        </Card>
+                      </div>
+                    </a>
+                  </div>
+                }
+
 
               </div>
             </div>
-          </main>
-        </div>
+          </main >
+        </div >
 
 
       }
+
+      <SelectInternCompanyModal open={open} setOpen={setOpen} />
 
     </>
   )

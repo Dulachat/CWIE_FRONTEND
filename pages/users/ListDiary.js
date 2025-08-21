@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Tag, Button, Modal, Form, Input, Select } from "antd";
-import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
+import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from "antd";
+import { EyeOutlined, SettingOutlined, CopyOutlined } from "@ant-design/icons";
 import UserNavbar from "../Components/UserNavbar";
 import FormInfoDiary from "../Components/FormInfoDairy";
 import { useRouter } from "next/router";
@@ -18,6 +18,8 @@ export default function ListDiary() {
   const [data, setData] = useState();
   const [headerSelection, setHeaderSelection] = useState();
   const [headerData, setHeader] = useState(undefined);
+  const [openDocument, setOpenDocument] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   useEffect(() => {
     const stored = localStorage.getItem("user");
     setDataStore(stored ? JSON.parse(stored) : null);
@@ -79,6 +81,27 @@ export default function ListDiary() {
       render: (text) => <a>{text.JoinStudent.branchJoin.branch_name}</a>,
     },
     {
+      title: "ลิ้งค์เอกสารออกฝึก",
+      key: "",
+      width: "10%",
+      render: (row) => (
+        <Space>
+          <Button onClick={() => {
+            setOpenDocument(true)
+            setSelectedDocument(row)
+          }}>View</Button>
+          <Button
+            icon={<CopyOutlined />}
+            onClick={() => copyToClipboard(row.documentLink)}
+            type="default"
+            disabled={!row.documentLink}
+          >
+            Copy
+          </Button>
+        </Space>
+      )
+    },
+    {
       title: "ดูข้อมูล",
       key: "actionInfo",
       width: "10%",
@@ -122,6 +145,18 @@ export default function ListDiary() {
   if (!data) {
     return <></>;
   }
+  const copyToClipboard = (text) => {
+    if (!text || text === null || text === '') {
+      message.error('ไม่มีลิงก์เอกสารให้คัดลอก');
+      return;
+    }
+
+    navigator.clipboard.writeText(text).then(() => {
+      message.success('คัดลอกลิงก์แล้ว');
+    }).catch(() => {
+      message.error('ไม่สามารถคัดลอกได้');
+    });
+  };
   return (
     <>
       <UserNavbar />
@@ -199,6 +234,28 @@ export default function ListDiary() {
         footer={[]}
       >
         <FormInfoDiary />
+      </Modal>
+      <Modal
+        width={"60%"}
+        open={openDocument}
+        title="ลิ้งค์เอกสารออกฝึก"
+        onCancel={() => setOpenDocument(false)}
+        footer={[]}
+      >
+        <div className=" w-full h-full">
+
+          <Input value={selectedDocument?.documentLink} disabled className="w-10/12" />
+          <Button
+            icon={<CopyOutlined />}
+            onClick={() => copyToClipboard(selectedDocument?.documentLink)}
+            type="primary"
+            size="large"
+            className="bg-sky-500 ml-2"
+          >
+            คัดลอก
+          </Button>
+
+        </div>
       </Modal>
     </>
   );

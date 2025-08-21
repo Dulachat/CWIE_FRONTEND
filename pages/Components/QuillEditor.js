@@ -3,7 +3,10 @@ import dynamic from "next/dynamic";
 import FormAddDiary from "./FormAddDiary";
 import { Button } from "antd";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>
+});
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -47,7 +50,7 @@ class MyEditor extends React.Component {
       fetch(process.env.NEXT_PUBLIC_API_URL + "Diary/upload", requestOptions)
         .then((response) => response.text())
         .then((result) => {
-         
+
           this.quill.deleteText(range.index, 1);
           this.quill.insertEmbed(range.index, "image", result);
         })

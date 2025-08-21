@@ -10,7 +10,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
     const [teacher, setTeacher] = useState([]);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
     const [userData, setUserData] = useState(null);
-
+    const [assessmentDetail, setAssessmentDetail] = useState(null);
     const [messageApi, contextHolder] = message.useMessage();
 
     // ดึงข้อมูล user จาก localStorage เมื่อ component mount
@@ -23,6 +23,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
         }
     }, []);
 
+
     useEffect(() => {
         const fetchCompany = async () => {
             const response = await axiosInstance.get('/company/allCompany');
@@ -32,11 +33,28 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
 
         const fetchAssessment = async () => {
             const response = await axiosInstance.get('/assessment/getOneHead/1');
-            console.log(response.data);
+
             setAssessment(response.data);
         }
         fetchAssessment();
-    }, []);
+        if (userData) {
+
+            const fetchData = async () => {
+                const response = await axiosInstance.get('assessment/detail/' + userData.data.id)
+                setAssessmentDetail(response.data);
+            }
+            fetchData()
+
+        }
+    }, [userData]);
+
+    useEffect(() => {
+        if (assessmentDetail) {
+            setSelectedAssessment({ id: assessmentDetail.header_id })
+            setSelectedCompany({ id: assessmentDetail.company_id })
+            setSelectedTeacher({ id: assessmentDetail.evaluator1_id })
+        }
+    }, [assessmentDetail])
 
     // ดึงข้อมูลครูเมื่อ userData พร้อมแล้ว
     useEffect(() => {
@@ -58,14 +76,12 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
                 className: "bg-indigo-600 hover:bg-indigo-700"
             },
             onOk: () => {
-                console.log(selectedAssessment)
-                console.log(selectedCompany)
-                console.log(selectedTeacher)
+
                 const data = {
                     header_id: selectedAssessment.id,
                     company_id: selectedCompany.id,
                     evaluator1_id: selectedTeacher.id,
-                    student_id: userData.data.id,
+                    student_id: userData?.data.id,
                 }
                 axiosInstance.post('assessment/addDetail', data)
                     .then(response => {
@@ -122,6 +138,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
                             if (!option || !option.label) return false;
                             return option.label.toLowerCase().includes(input.toLowerCase());
                         }}
+                        disabled={assessmentDetail ? true : false}
                         showArrow={true}
                         allowClear={true}
                         notFoundContent="ไม่พบการออกฝึกที่ค้นหา"
@@ -153,6 +170,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
                             if (!option || !option.label) return false;
                             return option.label.toLowerCase().includes(input.toLowerCase());
                         }}
+                        disabled={assessmentDetail ? true : false}
                         showArrow={true}
                         allowClear={true}
                         notFoundContent="ไม่พบสถานประกอบการณ์ที่ค้นหา"
@@ -182,6 +200,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
                         value={selectedTeacher?.id || undefined}
                         size='large'
                         style={{ width: '100%' }}
+                        disabled={assessmentDetail ? true : false}
                         onChange={(value) => {
                             if (value) {
                                 const selectedTeacherData = teacher.find(item => item.id === value);
@@ -207,13 +226,13 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
 
                 </div>
 
-                <div className='mt-4'>
+                {!assessmentDetail && <div className='mt-4'>
                     <Button type='primary'
                         className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         onClick={onConfirm}
                         disabled={!selectedCompany && !selectedAssessment && !selectedTeacher}
                     >ยืนยัน</Button>
-                </div>
+                </div>}
             </Modal>
         </div>
     );

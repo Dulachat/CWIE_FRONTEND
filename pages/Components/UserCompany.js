@@ -54,11 +54,12 @@ export default function UserCompany() {
 
     const handleExport = () => {
         try {
-            const headers = ["ชื่อนักศึกษา", "Username", "Password"];
+            const headers = ["ชื่อนักศึกษา", "สถานประกอบการ", "Username", "Password"];
             const rows = data.map((item) => {
                 const studentName = item?.student ? `${item.student.fname_TH || ''} ${item.student.lname_TH || ''}`.trim() : '';
                 return [
                     studentName,
+                    item?.companyJoin?.company_name || '',
                     item?.username || '',
                     item?.rawPwd || ''
                 ];

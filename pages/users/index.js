@@ -44,7 +44,7 @@ export default function UserIndex() {
                             <div className=' mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>
 
                                 <div className='w-full '>
-                                    <Link href="/users/listDiary">
+                                    <Link href="/users/ListDiary">
                                         <div className='w-full px-10'>
                                             <Card className='mx-2  h-16 bg-gradient-to-tr from-yellow-300 to-pink-500  hover:bg-gradient-to-bl'>
                                             </Card>

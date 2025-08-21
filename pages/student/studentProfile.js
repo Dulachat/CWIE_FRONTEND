@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Image, Button, Input, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
-import FormEditStudentProfile from "../components/studentProfile";
+import FormEditStudentProfile from "../Components/studentProfile";
 import axiosInstance from "../../utils/axios";
 
 export default function StudentProfile() {

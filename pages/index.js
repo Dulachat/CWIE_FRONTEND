@@ -1,8 +1,8 @@
-import { Card, Row, Col, message } from 'antd'
+import { Card, Row, Col, message, Spin } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import DashboardNavbar from './components/DashboardNavbar'
+import DashboardNavbar from './Components/DashboardNavbar'
 import { ContainerTwoTone, ContactsTwoTone } from '@ant-design/icons'
 import SelectInternCompanyModal from './Components/SelectInternCompanyModal'
 export default function Index() {
@@ -82,7 +82,12 @@ export default function Index() {
     })
   }
 
-  console.log("data", data)
+  if (!data) return <div>
+    <div className='flex justify-center items-center h-screen'>
+      <Spin />
+      <p>Loading...</p>
+    </div>
+  </div>
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { Card, Form, Input, Button, Select } from 'antd'
 import React, { useState, useEffect } from 'react'
-import FormRegister from './components/FormRegister'
+import FormRegister from './Components/FormRegister'
 export default function register() {
     const size = "large"
     return (

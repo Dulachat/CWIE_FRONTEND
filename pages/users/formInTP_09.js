@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Space, Table, Form, message, Input } from "antd";
-import UserNavbar from "../components/UserNavbar";
+import UserNavbar from "../Components/UserNavbar";
 
 import { useRouter } from "next/router";
 const { Column, ColumnGroup } = Table;

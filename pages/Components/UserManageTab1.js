@@ -6,8 +6,8 @@ import { EyeOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router';
 import axiosInstance from '../../utils/axios'
 
-import FormAddUser from '../components/FormAddUser';
-import FormEditUser from '../components/FormEditUser';
+import FormAddUser from '../Components/FormAddUser';
+import FormEditUser from '../Components/FormEditUser';
 
 const size = "large"
 export default function UserManageTab1() {

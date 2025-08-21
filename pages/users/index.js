@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Row } from 'antd'
 import { ContainerTwoTone } from '@ant-design/icons';
-import UserNavbar from '../components/UserNavbar';
+import UserNavbar from '../Components/UserNavbar';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 export default function UserIndex() {
@@ -42,7 +42,7 @@ export default function UserIndex() {
                     <main>
                         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                             <div className=' mx-auto max-w-7xl py-6 sm:px-6 lg:px-8'>
-                             
+
                                 <div className='w-full '>
                                     <Link href="/users/listDiary">
                                         <div className='w-full px-10'>

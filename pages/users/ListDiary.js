@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table, Tag, Button, Modal, Form, Input, Select } from "antd";
 import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
-import UserNavbar from "../components/UserNavbar";
-import FormInfoDiary from "../components/FormInfoDairy";
+import UserNavbar from "../Components/UserNavbar";
+import FormInfoDiary from "../Components/FormInfoDairy";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
 import { useCookies } from "react-cookie";

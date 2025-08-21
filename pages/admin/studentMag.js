@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, message } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import FormAddStudent from '../components/FormAddStudent';
-import FormEditStudent from '../components/FormEditStudent';
+import FormAddStudent from '../Components/FormAddStudent';
+import FormEditStudent from '../Components/FormEditStudent';
 import axiosInstance from '../../utils/axios'
 import { useRouter } from 'next/router';
 const size = "large"

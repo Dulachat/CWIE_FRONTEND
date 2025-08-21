@@ -6,8 +6,8 @@ import {
   SettingOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import GeneralMagTab2 from "../components/GeneralMagTab2";
-import GeneralMagTab1 from "../components/GeneralMagTab1";
+import GeneralMagTab2 from "../Components/GeneralMagTab2";
+import GeneralMagTab1 from "../Components/GeneralMagTab1";
 import UserCompany from "../Components/UserCompany";
 
 export default function GeneralMag() {

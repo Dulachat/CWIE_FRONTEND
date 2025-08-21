@@ -1,7 +1,7 @@
 import React from 'react'
-import StudentNavbar from '../components/StudentNavbar'
+import StudentNavbar from '../Components/StudentNavbar'
 import { Card } from 'antd'
-import FormStudentIntern from '../components/FormStudentIntern'
+import FormStudentIntern from '../Components/FormStudentIntern'
 export default function addInternDetail() {
     return (
         <>

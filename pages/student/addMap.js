@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, Col, Row } from "antd";
 import { UsergroupAddOutlined } from "@ant-design/icons";
-import StudentNavbar from "../components/StudentNavbar";
-import FormAddMaps from "../components/FormAddMaps";
+import StudentNavbar from "../Components/StudentNavbar";
+import FormAddMaps from "../Components/FormAddMaps";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
 

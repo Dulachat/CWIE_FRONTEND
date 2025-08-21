@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Space, Table, Tag, Button, Modal, Form, Input, Select } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import UserNavbar from '../components/UserNavbar';
-import FormInfoDiary from '../components/FormInfoDairy';
+import UserNavbar from '../Components/UserNavbar';
+import FormInfoDiary from '../Components/FormInfoDairy';
 import axiosInstance from '../../utils/axios';
 import { useRouter } from 'next/router';
 
@@ -13,7 +13,7 @@ export default function ListDiaryDetail() {
     const [id, setId] = useState();
     const [data, setData] = useState();
     const [dataDiary, setDataDiary] = useState();
-    const [searchText , setSearchText] =useState("")
+    const [searchText, setSearchText] = useState("")
     useEffect(() => {
         setId(router.query.id)
     }, [router])
@@ -127,7 +127,7 @@ export default function ListDiaryDetail() {
                 ]}
 
             >
-                <FormInfoDiary data={dataDiary}/>
+                <FormInfoDiary data={dataDiary} />
             </Modal>
 
 

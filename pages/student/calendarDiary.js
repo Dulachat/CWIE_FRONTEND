@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Alert, Calendar, message } from "antd";
 import dayjs from "dayjs";
-import StudentNavbar from "../components/StudentNavbar";
+import StudentNavbar from "../Components/StudentNavbar";
 import axiosInstance from "../../utils/axios";
 import { ExportFile } from "../../utils/exportpdf";
 

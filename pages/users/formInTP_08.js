@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table, Form, Input, message } from "antd";
-import UserNavbar from "../components/UserNavbar";
+import UserNavbar from "../Components/UserNavbar";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
 

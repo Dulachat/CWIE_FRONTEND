@@ -1,9 +1,9 @@
-import { Button, Card , message} from "antd";
+import { Button, Card, message } from "antd";
 import React, { useEffect, useState } from "react";
-import StudentNavbar from "../components/StudentNavbar";
+import StudentNavbar from "../Components/StudentNavbar";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
-import FormEditDiary from "../components/FormEditDiary";
+import FormEditDiary from "../Components/FormEditDiary";
 
 export default function EditDiary() {
   const router = useRouter();
@@ -50,23 +50,23 @@ export default function EditDiary() {
     }
   }, [router, dataStore]);
   const removeDiary = async (data) => {
-   const deleteDiary = await axiosInstance.delete(`Diary/removeDiary/${data.diaryId}/${data.detailId}`)
-   if(deleteDiary.status === 200){
-    messageSuccess()
-    setTimeout(()=>{
-      router.back()
-     },1500)
-   }else{
-    messageError()
-   }
+    const deleteDiary = await axiosInstance.delete(`Diary/removeDiary/${data.diaryId}/${data.detailId}`)
+    if (deleteDiary.status === 200) {
+      messageSuccess()
+      setTimeout(() => {
+        router.back()
+      }, 1500)
+    } else {
+      messageError()
+    }
 
   };
   return (
     <>
-    {contextHolder}
+      {contextHolder}
       {data && (
         <>
-      
+
           <StudentNavbar />
           <header className="bg-white shadow">
             <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import UserNavbar from "../components/UserNavbar";
+import UserNavbar from "../Components/UserNavbar";
 import { Table, Button, Modal, Input } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
@@ -156,29 +156,29 @@ export default function FormListStudent09() {
             parseInt(record.JoinForm08.score2_3) +
             parseInt(record.JoinForm08.score2_4) +
             parseInt(record.JoinForm08.score2_5)) *
-            2 || 0;
+          2 || 0;
 
         const sumScore09 =
           parseInt(record.JoinForm09.score1_1) +
-            parseInt(record.JoinForm09.score1_2) +
-            parseInt(record.JoinForm09.score1_3) +
-            parseInt(record.JoinForm09.score1_4) +
-            parseInt(record.JoinForm09.score1_5) +
-            parseInt(record.JoinForm09.score1_6) +
-            parseInt(record.JoinForm09.score1_7) +
-            parseInt(record.JoinForm09.score2_1) +
-            parseInt(record.JoinForm09.score2_2) +
-            parseInt(record.JoinForm09.score2_3) +
-            parseInt(record.JoinForm09.score3_1) +
-            parseInt(record.JoinForm09.score3_2) +
-            parseInt(record.JoinForm09.score3_3) +
-            parseInt(record.JoinForm09.score3_4) +
-            parseInt(record.JoinForm09.score3_5) +
-            parseInt(record.JoinForm09.score4_1) +
-            parseInt(record.JoinForm09.score4_2) +
-            parseInt(record.JoinForm09.score4_3) +
-            parseInt(record.JoinForm09.score4_4) +
-            parseInt(record.JoinForm09.score4_5) || 0;
+          parseInt(record.JoinForm09.score1_2) +
+          parseInt(record.JoinForm09.score1_3) +
+          parseInt(record.JoinForm09.score1_4) +
+          parseInt(record.JoinForm09.score1_5) +
+          parseInt(record.JoinForm09.score1_6) +
+          parseInt(record.JoinForm09.score1_7) +
+          parseInt(record.JoinForm09.score2_1) +
+          parseInt(record.JoinForm09.score2_2) +
+          parseInt(record.JoinForm09.score2_3) +
+          parseInt(record.JoinForm09.score3_1) +
+          parseInt(record.JoinForm09.score3_2) +
+          parseInt(record.JoinForm09.score3_3) +
+          parseInt(record.JoinForm09.score3_4) +
+          parseInt(record.JoinForm09.score3_5) +
+          parseInt(record.JoinForm09.score4_1) +
+          parseInt(record.JoinForm09.score4_2) +
+          parseInt(record.JoinForm09.score4_3) +
+          parseInt(record.JoinForm09.score4_4) +
+          parseInt(record.JoinForm09.score4_5) || 0;
 
         return sumScore08 + sumScore09;
       },

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Image, Button, Input, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import FormEditProfile from "./components/FormEditProfile";
+import FormEditProfile from "./Components/FormEditProfile";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import axiosInstance from "../utils/axios";

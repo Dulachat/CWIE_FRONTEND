@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card, } from 'antd'
-import {  ContainerTwoTone } from '@ant-design/icons';
-import UserNavbar from '../components/UserNavbar';
+import { ContainerTwoTone } from '@ant-design/icons';
+import UserNavbar from '../Components/UserNavbar';
 import Link from 'next/link';
 
 import { useRouter } from 'next/router';
@@ -21,7 +21,7 @@ export default function FormList() {
     }, [dataStore])
     useEffect(() => {
         if (data === undefined) return
-            setIsLogin(true)
+        setIsLogin(true)
     }, [data])
 
     return (

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Navbar from '../Components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
-import InternTabs1 from '../components/InternTabs1';
-import InternTabs2 from '../components/InternTabs2';
+import InternTabs1 from '../Components/InternTabs1';
+
 const size = "large"
 export default function InternshipMag(key) {
   const iconSize = "large"

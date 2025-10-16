@@ -106,7 +106,7 @@ export default function UserNavbar() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {data?.userLevelJoin?.id !== 4 && navigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -188,7 +188,7 @@ export default function UserNavbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
+              {data?.userLevelJoin?.id !== 4 && navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"

@@ -28,7 +28,7 @@ export default function DashboardNavbar() {
   }, [data])
 
   const navigation = [
-    { name: 'Dashboard', href: '/', current: false, key: 'item-1' },
+    { name: 'Dashboard', href: '/', current: false, key: 'item-1', disabled: data?.userLevelJoin?.id === 4 },
     {
       name: 'คู่มือการใช้งาน',
       href:
@@ -40,6 +40,7 @@ export default function DashboardNavbar() {
               ? 'https://drive.google.com/file/d/1DjVOY9BkdRPm3jU94lIJgZ3_YMdJkeZG/view?usp=drive_link'
               : 'https://drive.google.com/file/d/1Az_3kio-lvut2a0ah6OekCgnMP8zLil-/view?usp=drive_link',
       key: 'item-4',
+      disabled: false
     },
   ];
 
@@ -66,10 +67,10 @@ export default function DashboardNavbar() {
     }
   }
   return (
-    <Disclosure as="nav" className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky">
+    <Disclosure as="nav" className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ... sticky z-50">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative z-50">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -103,7 +104,8 @@ export default function DashboardNavbar() {
                         href={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-white hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          'rounded-md px-3 py-2 text-sm font-medium',
+                          item.disabled ? 'hidden' : ''
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -116,7 +118,7 @@ export default function DashboardNavbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+                <Menu as="div" className="relative ml-3 z-50">
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
@@ -141,8 +143,9 @@ export default function DashboardNavbar() {
                     leave="transition ease-in duration-75"
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
+                    style={{ zIndex: 9999 }}
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       {data && data?.userLevelJoin?.id !== 3 && <Menu.Item>
                         {({ active }) => (
                           <a
@@ -177,11 +180,13 @@ export default function DashboardNavbar() {
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
+
                   as="a"
                   href={item.href}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    'block rounded-md px-3 py-2 text-base font-medium',
+                    item.disabled ? 'hidden' : ''
                   )}
                   aria-current={item.current ? 'page' : undefined}
                 >

@@ -28,7 +28,9 @@ export default function UserCompany() {
             dataIndex: "student",
             key: "student_name",
             render: (record) => {
-                return record.fname_TH + " " + record.lname_TH
+                return <>
+                    {record ? record?.fname_TH + " " + record?.lname_TH : "-"}
+                </>
             }
         },
         {
@@ -36,7 +38,7 @@ export default function UserCompany() {
             dataIndex: "companyJoin",
             key: "company_name",
             render: (record) => {
-                return record.company_name
+                return record?.company_name
             }
         },
         {
@@ -56,12 +58,12 @@ export default function UserCompany() {
         try {
             const headers = ["ชื่อนักศึกษา", "สถานประกอบการ", "Username", "Password"];
             const rows = data.map((item) => {
-                const studentName = item?.student ? `${item.student.fname_TH || ''} ${item.student.lname_TH || ''}`.trim() : '';
+                const studentName = item?.student ? `${item.student.fname_TH || ''} ${item.student.lname_TH || ''}`.trim() : 'ไม่ระบุ';
                 return [
                     studentName,
-                    item?.companyJoin?.company_name || '',
-                    item?.username || '',
-                    item?.rawPwd || ''
+                    item?.companyJoin?.company_name || 'ไม่ระบุ',
+                    item?.username || 'ไม่ระบุ',
+                    item?.rawPwd || 'ไม่ระบุ'
                 ];
             });
 

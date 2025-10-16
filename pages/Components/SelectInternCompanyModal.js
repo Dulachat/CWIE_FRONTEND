@@ -51,7 +51,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
     useEffect(() => {
         if (assessmentDetail) {
             setSelectedAssessment({ id: assessmentDetail.header_id })
-            setSelectedCompany({ id: assessmentDetail.company_id })
+            setSelectedCompany(assessmentDetail.JoinCompany)
             setSelectedTeacher({ id: assessmentDetail.evaluator1_id })
         }
     }, [assessmentDetail])

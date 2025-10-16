@@ -25,11 +25,11 @@ export default function GeneralMag() {
       label: `จัดการข้อมูลสาขาวิชา`,
       children: <GeneralMagTab2 />,
     },
-    {
-      key: "3",
-      label: `จัดการข้อมูลผู้ใช้สำหรับสถานประกอบการ`,
-      children: <UserCompany />,
-    },
+    // {
+    //   key: "3",
+    //   label: `จัดการข้อมูลผู้ใช้สำหรับสถานประกอบการ`,
+    //   children: <UserCompany />,
+    // },
   ];
 
   return (

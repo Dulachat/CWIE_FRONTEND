@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import DashboardNavbar from './Components/DashboardNavbar'
-import { ContainerTwoTone, ContactsTwoTone } from '@ant-design/icons'
+import { ContainerTwoTone, ContactsTwoTone, FileTextTwoTone } from '@ant-design/icons'
 import SelectInternCompanyModal from './Components/SelectInternCompanyModal'
 export default function Index() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Index() {
     } else {
       setDataStore(stored ? JSON.parse(stored) : undefined);
     }
-  }, [])
+  }, [router])
   useEffect(() => {
     if (dataStore === undefined) return
     setData(dataStore.data)
@@ -30,6 +30,7 @@ export default function Index() {
     if (data === undefined) return
     if (data.userLevelJoin !== undefined) {
       setUserStatus(data.userLevelJoin.level_name)
+
       setIsLogin(true)
     }
     if (data.student_id !== undefined) {
@@ -50,6 +51,10 @@ export default function Index() {
     if (userStatus === 'student') {
       setUserType("S")
     }
+    if (userStatus === "ผู้บริหาร") {
+      setUserType("A")
+      router.push('/dashboardReport')
+    }
   }, [userStatus])
 
   const checkUser = () => {
@@ -69,6 +74,9 @@ export default function Index() {
     if (userStatus === 'student') {
 
       router.push('/student')
+    }
+    if (userStatus === "ผู้บริหาร") {
+      router.push('/dashboardReport')
     }
   }
 
@@ -139,6 +147,24 @@ export default function Index() {
                         </Card>
                       </div>
                     </a>
+                  </div>
+                }
+
+                {data?.userLevelJoin?.id === 4 &&
+                  <div className='w-full mt-2 '>
+                    <Link href='/dashboardReport'>
+                      <div className='w-full px-10'>
+                        <Card className='mx-2  h-16 bg-gradient-to-tr from-yellow-300 to-pink-500  hover:bg-gradient-to-bl'>
+                        </Card>
+                      </div>
+                      <div className=' w-full -mt-7'>
+                        <Card className=' mx-auto w-11/12 h-20  border-red-400 hover:bg-slate-200 ' >
+                          <div>
+                            <p className=' text-lg text-center font-bold'><FileTextTwoTone style={{ fontSize: "30px" }} />  รายงานคะแนนแบบสอบถาม</p>
+                          </div>
+                        </Card>
+                      </div>
+                    </Link>
                   </div>
                 }
 

@@ -8,19 +8,47 @@ import axiosInstance from '../../utils/axios'
 export default function UserCompany() {
     const [messageApi, contextHolder] = message.useMessage();
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
     const currentYear = new Date().getFullYear()
     const [selectedYear, setSelectedYear] = useState(String(currentYear));
 
+    const fetchData = async (page = 1, limit = 10) => {
+        setLoading(true);
+        try {
+            const res = await axiosInstance.get('assessment/getEvaluator', {
+                params: {
+                    page,
+                    limit,
+                    yearTerm: selectedYear
+                }
+            });
+
+            const payload = res?.data ?? {};
+            const items = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
+            setData(items);
+
+            // รองรับหลายรูปแบบของ total
+            const totalFromApi = payload?.pagination?.total ?? payload?.total ?? (Array.isArray(items) ? items.length : 0);
+            setTotal(Number(totalFromApi) || 0);
+
+            setCurrentPage(page);
+            setPageSize(limit);
+        } catch (error) {
+            console.error(error);
+            setData([]);
+            setTotal(0);
+            messageApi.open({ type: 'error', content: 'โหลดข้อมูลไม่สำเร็จ' });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
-        axiosInstance.get('assessment/getEvaluator', {
-            params: {
-                page: 1,
-                limit: 10,
-                yearTerm: selectedYear
-            }
-        }).then((res) => {
-            setData(res.data.data);
-        })
+        // รีเฟรชหน้าเป็นหน้าแรกเมื่อปีเปลี่ยน
+        fetchData(1, pageSize);
     }, [selectedYear])
     const columns = [
         {
@@ -53,6 +81,14 @@ export default function UserCompany() {
         },
 
     ]
+
+    const handleTableChange = (pagination) => {
+        const newPage = pagination?.current || 1;
+        const newPageSize = pagination?.pageSize || 10;
+        if (newPage !== currentPage || newPageSize !== pageSize) {
+            fetchData(newPage, newPageSize);
+        }
+    }
 
     const handleExport = () => {
         try {
@@ -120,7 +156,21 @@ export default function UserCompany() {
                 </div>
                 <div className='w-full'>
                     <label>รายชื่อสาขาวิชา</label>
-                    <Table columns={columns} dataSource={data} pagination={5} style={{ overflow: "auto" }} />
+                    <Table
+                        rowKey={(record, index) => record?._id || record?.id || index}
+                        columns={columns}
+                        dataSource={data}
+                        loading={loading}
+                        pagination={{
+                            current: currentPage,
+                            pageSize: pageSize,
+                            total: total,
+                            showSizeChanger: true,
+                            pageSizeOptions: ['10', '20', '50', '100']
+                        }}
+                        onChange={handleTableChange}
+                        style={{ overflow: "auto" }}
+                    />
                 </div>
             </div  >
 

@@ -62,13 +62,18 @@ export default function Login() {
 
         axios.request(config)
             .then((res) => {
-                { messageSuccess() }
-                localStorage.setItem('user', JSON.stringify(res))
+                messageSuccess();
+                localStorage.setItem('user', JSON.stringify(res));
                 setTimeout(() => {
-                    router.push('/')
-                }, 2000)
+                    router.push('/');
+                }, 2000);
             })
-            .catch((error) => { { messageError() } console.error(error) });
+            .catch((error) => {
+                messageError();
+                if (process.env.NODE_ENV === 'development') {
+                    console.error('Login error:', error);
+                }
+            });
     }
 
 

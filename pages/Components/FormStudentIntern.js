@@ -24,14 +24,12 @@ export default function FormStudentIntern() {
   const [isLogin, setIsLogin] = useState(false);
   const [item, setItem] = useState([]);
   const [itemAddress, setItemAddress] = useState([null]);
-  const [dummyState, rerender] = React.useState(1);
-  const axios = require("axios");
   const [dataStore, setDataStore] = useState();
   const [evaluator, setEvaluator] = useState();
   const [data, setData] = useState();
   useEffect(() => {
     const stored = localStorage.getItem("user");
-    setDataStore(stored ? JSON.parse(stored) : fallbackValue);
+    setDataStore(stored ? JSON.parse(stored) : null);
   }, []);
   useEffect(() => {
     if (dataStore === undefined) return;
@@ -57,7 +55,9 @@ export default function FormStudentIntern() {
           setDetailHead(res.data);
         })
         .catch((err) => {
-          console.log(err);
+          if (process.env.NODE_ENV === 'development') {
+            console.error('Error fetching assessment detail:', err);
+          }
         });
     }
   }, [item]);
@@ -117,15 +117,19 @@ export default function FormStudentIntern() {
     };
     fetch(
       process.env.NEXT_PUBLIC_API_URL +
-        "student/updateStudentIntern/" +
-        item.id,
+      "student/updateStudentIntern/" +
+      item.id,
       requestOptions
     )
       .then((response) => response.text())
       .then((result) => {
         messageUp();
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error sending data:', error);
+        }
+      });
   };
   return (
     <>
@@ -147,9 +151,8 @@ export default function FormStudentIntern() {
                         <Select.Option
                           key={data.id}
                           value={data.id}
-                          initialValue={`${
-                            data.fname_TH + " " + data.lname_TH
-                          }`}
+                          initialValue={`${data.fname_TH + " " + data.lname_TH
+                            }`}
                         >
                           <p>{data.fname_TH + " " + data.lname_TH}</p>
                         </Select.Option>

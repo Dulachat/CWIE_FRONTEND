@@ -81,7 +81,11 @@ export default function InternTabs2() {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error fetching assessment detail:', err);
+        }
+      });
   }, [dummyState, headerSelection]);
   const columns = [
     {
@@ -169,7 +173,11 @@ export default function InternTabs2() {
           setHeaderSelection();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error fetching header data:', err);
+        }
+      });
   };
 
   const handleCancelAdd = () => {
@@ -221,30 +229,25 @@ export default function InternTabs2() {
           }
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error sending add data:', error);
+        }
+      });
   };
   const sendEditData = (value) => {
-    const axios = require("axios");
     let data = JSON.stringify({
       header_id: value.header_id,
       student_id: value.student_id,
       evaluator1_id: value.evaluator1_id,
       company_id: value.company_id,
     });
-    let config = {
-      method: "patch",
-      maxBodyLength: Infinity,
-      url:
-        process.env.NEXT_PUBLIC_API_URL +
-        "assessment/updateDetail/" +
-        dataEdit.id,
+
+    axiosInstance.patch("assessment/updateDetail/" + dataEdit.id, data, {
       headers: {
         "Content-Type": "application/json",
       },
-      data: data,
-    };
-    axios
-      .request(config)
+    })
       .then((response) => {
         messageApi.open({
           type: "success",
@@ -255,7 +258,11 @@ export default function InternTabs2() {
           rerender(dummyState + 1);
         }, 1000);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error updating data:', error);
+        }
+      });
   };
   const sendDelete = (id) => {
     axiosInstance
@@ -271,7 +278,7 @@ export default function InternTabs2() {
   return (
     <div>
       {contextHolder}
-      <div key={"undefined3"}>
+      <div key="assessment-management-container">
         <div className="w-full grid">
           <div className=""></div>
           <div>
@@ -393,7 +400,9 @@ export default function InternTabs2() {
                   ]}
                 >
                   <Select size={size}>
-                    <Select.Option key={""} value={""}></Select.Option>
+                    <Select.Option key="default-empty" value="">
+                      -- เลือกอาจารย์ประจำสาขา --
+                    </Select.Option>
                     {userData.map((data) => (
                       <Select.Option key={`eva-${data.id}`} value={data.id}>
                         {data.fname_TH + " " + data.lname_TH}

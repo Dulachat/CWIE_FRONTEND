@@ -7,11 +7,9 @@ const size = "large";
 export default function FormAddUser() {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedBranch, setSelectedBranch] = useState(null);
   const [branchData, setBranchData] = useState([]);
   const [userLevelData, setUserLevel] = useState([]);
   const [companyData, setCompanyData] = useState([]);
-  const [dummyState, rerender] = React.useState(1);
   const [messageApi, contextHolder] = message.useMessage();
   const messageError = () => {
     messageApi.open({
@@ -34,46 +32,46 @@ export default function FormAddUser() {
   };
 
   useEffect(() => {
-    axiosInstance.get("users/allUsers").then(function (response) {
-      setBranchData(response.data);
-    });
-  }, [dummyState]);
-
-  useEffect(() => {
-    axiosInstance.get("branch/allBranch").then(function (response) {
-      setBranchData(response.data);
-    });
+    axiosInstance.get("branch/allBranch")
+      .then(function (response) {
+        setBranchData(response.data);
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error fetching branches:', error);
+        }
+      });
   }, []);
 
   useEffect(() => {
-    axiosInstance.get("company/allCompany").then(function (response) {
-      setCompanyData(response.data);
-    });
+    axiosInstance.get("company/allCompany")
+      .then(function (response) {
+        setCompanyData(response.data);
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error fetching companies:', error);
+        }
+      });
   }, []);
 
   useEffect(() => {
-    axiosInstance.get("usersLevel/all").then(function (response) {
-      setUserLevel(response.data);
-    });
+    axiosInstance.get("usersLevel/all")
+      .then(function (response) {
+        setUserLevel(response.data);
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error fetching user levels:', error);
+        }
+      });
   }, []);
 
-  const label = `${selectedOption ? "2" : "3"}`;
   const handleChange = (value) => {
-    if (value === 2) {
-      setSelectedOption(value);
-    }
-    if (value === 3) {
-      setSelectedOption(value);
-    } else {
-      setSelectedOption(value);
-    }
-  };
-  const handleChangeBranch = (value) => {
-    setSelectedBranch(value);
+    setSelectedOption(value);
   };
 
   const sendData = (value) => {
-    const axios = require("axios");
     let data = JSON.stringify({
       username: value.username,
       pwd: value.pwd,
@@ -83,17 +81,12 @@ export default function FormAddUser() {
       company_id: value.company_id,
       user_level_id: value.user_level_id,
     });
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: process.env.NEXT_PUBLIC_API_URL + "users/createUsers",
+
+    axiosInstance.post("users/createUsers", data, {
       headers: {
         "Content-Type": "application/json",
       },
-      data: data,
-    };
-    axios
-      .request(config)
+    })
       .then((response) => {
         if (response.data === "error") {
           {
@@ -106,8 +99,16 @@ export default function FormAddUser() {
           }
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        messageError();
+        // Log error for debugging in development only
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error creating user:', error);
+        }
+      });
   };
+
+  // Debug log removed for production
   return (
     <>
       {contextHolder}
@@ -197,9 +198,9 @@ export default function FormAddUser() {
                 name={"branch_id"}
                 rules={[{ required: true, message: "กรุณาเลือกสาขาวิชา" }]}
               >
-                <Select size={size} defaultValue={"เลือกสาขาวิชา"}>
+                <Select size={size} defaultValue={"เลือกสาขาวิชา"} key={"branch"}>
                   {branchData.map((data) => (
-                    <Select.Option key={data.branch_name} value={data.id}>
+                    <Select.Option key={`branch-${data.id}`} value={data.id}>
                       {data.branch_name}
                     </Select.Option>
                   ))}

@@ -40,22 +40,15 @@ export default function Index() {
   }, [data])
 
   useEffect(() => {
-    if (userStatus === "แอดมิน") {
-      setUserType("U")
-
+    if (userStatus === "แอดมิน" || userStatus === "อาจารย์") {
+      setUserType("U");
+    } else if (userStatus === 'student') {
+      setUserType("S");
+    } else if (userStatus === "ผู้บริหาร") {
+      setUserType("A");
+      router.push('/dashboardReport');
     }
-    if (userStatus === "อาจารย์") {
-      setUserType("U")
-
-    }
-    if (userStatus === 'student') {
-      setUserType("S")
-    }
-    if (userStatus === "ผู้บริหาร") {
-      setUserType("A")
-      router.push('/dashboardReport')
-    }
-  }, [userStatus])
+  }, [userStatus, router]);
 
   const checkUser = () => {
 

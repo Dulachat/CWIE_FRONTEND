@@ -4,15 +4,20 @@ import { ContainerTwoTone } from '@ant-design/icons';
 import UserNavbar from '../Components/UserNavbar';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { getStoredUser, clearUserSession } from '../../utils/auth';
 export default function UserIndex() {
     const router = useRouter();
     const [isLogin, setIsLogin] = useState(false)
     const [dataStore, setDataStore] = useState()
     const [data, setData] = useState()
     useEffect(() => {
-        const stored = localStorage.getItem('user');
-        setDataStore(stored ? JSON.parse(stored) : fallbackValue);
-    }, [])
+        const userData = getStoredUser();
+        if (!userData) {
+            router.push('/auth/login');
+            return;
+        }
+        setDataStore(userData);
+    }, [router])
     useEffect(() => {
         if (dataStore === undefined) return
         setData(dataStore.data)
@@ -22,8 +27,8 @@ export default function UserIndex() {
         if (data.userLevelJoin.level_name === "อาจารย์" || data.userLevelJoin.level_name === "พี่เลี้ยง") {
             setIsLogin(true);
         } else {
-            localStorage.clear();
-            router.push('/auth/login')
+            clearUserSession();
+            router.push('/auth/login');
         }
     }, [data])
 

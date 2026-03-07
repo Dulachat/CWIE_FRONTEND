@@ -94,7 +94,7 @@ export default function Login() {
                             เข้าสู่ระบบ
                         </h2>
 
-                        <h4 className=" font-bold text-red-800 text-center">ระบบสารสนเทศ คณะเทคโนโลยีอุตสาหกรรม</h4>
+                        <h4 className=" font-bold text-red-800 text-center">ระบบสารสนเทศ คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h4>
                         <p className="text-center  text-rose-600 relative">มหาวิทยาลัยราชภัฎเลย</p>
 
                     </div>

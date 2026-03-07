@@ -33,7 +33,7 @@ const SelectInternCompanyModal = ({ open, setOpen }) => {
 
         const fetchAssessment = async () => {
             const response = await axiosInstance.get('/assessment/getOneHead/1');
-
+            console.log(response.data);
             setAssessment(response.data);
         }
         fetchAssessment();

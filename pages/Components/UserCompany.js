@@ -15,6 +15,7 @@ export default function UserCompany() {
     const currentYear = new Date().getFullYear()
     const [selectedYear, setSelectedYear] = useState(String(currentYear));
 
+
     const fetchData = async (page = 1, limit = 10) => {
         setLoading(true);
         try {
@@ -31,7 +32,7 @@ export default function UserCompany() {
             setData(items);
 
             // รองรับหลายรูปแบบของ total
-            const totalFromApi = payload?.pagination?.total ?? payload?.total ?? (Array.isArray(items) ? items.length : 0);
+            const totalFromApi = payload?.total ?? payload?.total ?? (Array.isArray(items) ? items.length : 0);
             setTotal(Number(totalFromApi) || 0);
 
             setCurrentPage(page);
@@ -90,9 +91,17 @@ export default function UserCompany() {
         }
     }
 
-    const handleExport = () => {
+    const handleExport = async () => {
         try {
             const headers = ["ชื่อนักศึกษา", "สถานประกอบการ", "Username", "Password"];
+            const getFromApi = await axiosInstance.get('assessment/getEvaluator', {
+                params: {
+                    page: 1,
+                    limit: 1000,
+                    yearTerm: selectedYear
+                }
+            });
+            const data = getFromApi?.data?.data ?? [];
             const rows = data.map((item) => {
                 const studentName = item?.student ? `${item.student.fname_TH || ''} ${item.student.lname_TH || ''}`.trim() : 'ไม่ระบุ';
                 return [

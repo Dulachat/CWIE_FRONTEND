@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Select, message,Image } from "antd";
+import { Button, Form, Input, Select, message, Image } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
 const size = "large";
@@ -77,7 +77,7 @@ const FormEditStudent = (props) => {
       redirect: "follow",
     };
     fetch(
-      process.env.NEXT_PUBLIC_API_URL + "student/updateStudent/" + item.id,
+      `${process.env.NEXT_PUBLIC_API_URL}student/updateStudent/${item.id}/${item.uuid}`,
       requestOptions
     )
       .then((response) => response.text())

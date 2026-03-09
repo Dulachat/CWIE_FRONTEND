@@ -145,14 +145,22 @@ export default function StudentCalendarDiary() {
     });
   };
   const exportFile = async (uuid) => {
+    if (!uuid) return;
     success();
     setLoading(true);
-    const link = document.createElement("a");
-    link.href = `${process.env.NEXT_PUBLIC_API_URL}Diary/export/${uuid}`;
-    link.click();
-    setTimeout(() => {
+    try {
+      await ExportFile(uuid);
+      messageApi.destroy();
+      successTrue();
+    } catch (err) {
+      messageApi.destroy();
+      messageApi.open({
+        type: "error",
+        content: err?.message ?? "ดาวน์โหลดไม่สำเร็จ",
+      });
+    } finally {
       setLoading(false);
-    }, 8000);
+    }
   };
 
   return (
@@ -176,7 +184,7 @@ export default function StudentCalendarDiary() {
             <button
               type="button"
               disabled={isLoading}
-              onClick={() => exportFile(dataStore.data.uuid)}
+              onClick={() => exportFile(dataStore?.data?.uuid)}
               className="mr-5 text-white bg-gradient-to-br from-green-600 to-green-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
               {isLoading ? "กำลังดาวน์โหลด..." : "ดาวน์โหลด PDF"}

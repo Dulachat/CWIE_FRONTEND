@@ -1,7 +1,7 @@
 import axiosInstance from "./axios";
 
 const POLL_INTERVAL = 2500;
-const MAX_POLL_ATTEMPTS = 60; // ~2.5 นาที
+const MAX_POLL_ATTEMPTS = 300; // ~2.5 นาที
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

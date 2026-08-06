@@ -99,7 +99,7 @@ export default function Index() {
           <DashboardNavbar />
           <header className="bg-white shadow">
             <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
-              <BackButton className="!mb-0 !mr-0" />
+              {/* <BackButton className="!mb-0 !mr-0" /> */}
               <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">สวัสดีคุณ{' ' + data?.fname_TH + ' ' + data?.lname_TH}</h3>
 
             </div>

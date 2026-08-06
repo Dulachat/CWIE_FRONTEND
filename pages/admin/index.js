@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Col, Row } from 'antd'
 import { ContainerTwoTone, SlidersTwoTone, ContactsTwoTone, AppstoreTwoTone } from '@ant-design/icons';
 import Navbar from '../Components/Navbar';
+import BackButton from '../Components/BackButton';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -34,7 +35,8 @@ export default function AdminIndex() {
       <div>
         <Navbar />
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+            <BackButton className="!mb-0 !mr-0" />
             <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">แอดมิน {data?.fname_TH + " " + data?.lname_TH}</h3>
 
           </div>

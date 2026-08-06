@@ -3,6 +3,7 @@ import { Space, Table, Tag, Button, Modal, Form, Input, Select } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
 import UserNavbar from '../Components/UserNavbar';
 import FormInfoDiary from '../Components/FormInfoDairy';
+import BackButton from '../Components/BackButton';
 import axiosInstance from '../../utils/axios';
 import { useRouter } from 'next/router';
 
@@ -95,7 +96,8 @@ export default function ListDiaryDetail() {
         <>
             <UserNavbar />
             <header className="bg-white shadow">
-                <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+                    <BackButton className="!mb-0 !mr-0" />
                     <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline"> รายการบันทึกการปฎิบัติงานประจำวัน</h3>
 
                 </div>

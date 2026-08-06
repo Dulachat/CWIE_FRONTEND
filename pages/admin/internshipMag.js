@@ -3,6 +3,7 @@ import Navbar from '../Components/Navbar';
 import { Space, Table, Tag, Button, Modal, Form, Input, Select, Tabs } from 'antd';
 import { EyeOutlined, SettingOutlined } from '@ant-design/icons';
 import InternTabs1 from '../Components/InternTabs1';
+import BackButton from '../Components/BackButton';
 
 const size = "large"
 export default function InternshipMag(key) {
@@ -29,7 +30,8 @@ export default function InternshipMag(key) {
     <>
       <Navbar />
       <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+          <BackButton className="!mb-0 !mr-0" />
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">internship Management</h1>
         </div>
       </header>

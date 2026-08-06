@@ -3,6 +3,7 @@ import UserNavbar from "../Components/UserNavbar";
 import { Table, Button, Modal, Input } from "antd";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
+import BackButton from "../Components/BackButton";
 import { useCookies } from "react-cookie";
 import { DiffFilled, CommentOutlined } from "@ant-design/icons";
 export default function FormListStudent09() {
@@ -233,7 +234,8 @@ export default function FormListStudent09() {
       <div>
         <UserNavbar />
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+            <BackButton className="!mb-0 !mr-0" />
             <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
               คะแนนการประเมิน แบบประเมินผลการปฏิบัติงานของผู้นิเทศประจำหน่วยงาน
             </h3>

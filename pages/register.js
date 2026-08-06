@@ -1,10 +1,14 @@
 import { Card, Form, Input, Button, Select } from 'antd'
 import React, { useState, useEffect } from 'react'
 import FormRegister from './Components/FormRegister'
+import BackButton from './Components/BackButton'
 export default function register() {
     const size = "large"
     return (
         <>
+            <div className="ml-5 mt-3">
+                <BackButton />
+            </div>
             <div className="justify-items-center mt-3 mr-5 flex ml-5 ">
                 <Card style={{ width: "100%", height: "200px" }} className="bg-gradient-to-r  from-rose-600  via-red-400 to-pink-500 ..." >
                     <div>

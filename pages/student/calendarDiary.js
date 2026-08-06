@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Alert, Calendar, message } from "antd";
 import dayjs from "dayjs";
 import StudentNavbar from "../Components/StudentNavbar";
+import BackButton from "../Components/BackButton";
 import axiosInstance from "../../utils/axios";
 import { ExportFile } from "../../utils/exportpdf";
 
@@ -168,7 +169,8 @@ export default function StudentCalendarDiary() {
       {contextHolder}
       <StudentNavbar />
       <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+          <BackButton className="!mb-0 !mr-0" />
           <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
             {dataDisplay?.title_name +
               dataDisplay?.fname_TH +

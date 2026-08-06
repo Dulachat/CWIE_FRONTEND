@@ -3,10 +3,13 @@ import { Card, Col, Row } from "antd";
 import { UsergroupAddOutlined } from "@ant-design/icons";
 import StudentNavbar from "../Components/StudentNavbar";
 import FormAddMaps from "../Components/FormAddMaps";
+import BackButton from "../Components/BackButton";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
+import { useRouter } from "next/router";
 
 export default function AddMap() {
+  const router = useRouter();
   const [dataStore, setDataStore] = useState();
   const [data, setData] = useState();
   useEffect(() => {
@@ -31,7 +34,8 @@ export default function AddMap() {
     <div>
       <StudentNavbar />
       <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+          <BackButton className="!mb-0 !mr-0" />
           <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
             {" "}
             เพิ่มแผนที่ สำหรับสถานประกอบการ {data?.JoinCompany?.company_name}

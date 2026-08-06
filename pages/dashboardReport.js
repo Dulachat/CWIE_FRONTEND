@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DashboardNavbar from './Components/DashboardNavbar';
+import BackButton from './Components/BackButton';
 import { Table, Card, Button, Row, Col, Layout, Menu } from 'antd';
 import {
     BarChartOutlined,
@@ -90,9 +91,12 @@ const DashboardReport = () => {
                 <Content className="p-6">
                     <Card className="shadow-lg">
                         <div className="flex items-center justify-between mb-6">
-                            <h1 className="text-2xl font-bold text-gray-800 m-0">
-                                {sidebarItems.find(item => item.id === activeTab)?.label}
-                            </h1>
+                            <div className="flex items-center gap-3">
+                                <BackButton className="!mb-0 !mr-0" />
+                                <h1 className="text-2xl font-bold text-gray-800 m-0">
+                                    {sidebarItems.find(item => item.id === activeTab)?.label}
+                                </h1>
+                            </div>
                             <div className="flex space-x-2">
                                 {/* <Button type="primary" className='bg-blue-500' icon={<FileTextOutlined />}>
                                     สร้างรายงาน

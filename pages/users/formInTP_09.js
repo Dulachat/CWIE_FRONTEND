@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Space, Table, Form, message, Input } from "antd";
 import UserNavbar from "../Components/UserNavbar";
+import BackButton from "../Components/BackButton";
 
 import { useRouter } from "next/router";
 const { Column, ColumnGroup } = Table;
@@ -367,7 +368,8 @@ export default function FormInTP_09() {
         {contextHolder}
         <UserNavbar />
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+            <BackButton className="!mb-0 !mr-0" />
             <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
               แบบประเมินผลการปฏิบัติงานของนักศึกษาจากหน่วยงาน
             </h3>

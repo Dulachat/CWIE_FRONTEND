@@ -1,5 +1,6 @@
 import React from 'react'
 import StudentNavbar from '../Components/StudentNavbar'
+import BackButton from '../Components/BackButton'
 import { Card } from 'antd'
 import FormStudentIntern from '../Components/FormStudentIntern'
 export default function addInternDetail() {
@@ -7,8 +8,8 @@ export default function addInternDetail() {
         <>
             <StudentNavbar />
             <header className="bg-white shadow">
-                <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-
+                <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+                    <BackButton className="!mb-0 !mr-0" />
                 </div>
             </header>
             <main>

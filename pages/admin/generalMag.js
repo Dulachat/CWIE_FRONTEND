@@ -9,6 +9,7 @@ import {
 import GeneralMagTab2 from "../Components/GeneralMagTab2";
 import GeneralMagTab1 from "../Components/GeneralMagTab1";
 import UserCompany from "../Components/UserCompany";
+import BackButton from "../Components/BackButton";
 
 export default function GeneralMag() {
   const onChange = (key) => {
@@ -36,7 +37,8 @@ export default function GeneralMag() {
     <>
       <Navbar />
       <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+          <BackButton className="!mb-0 !mr-0" />
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             General Management
           </h1>

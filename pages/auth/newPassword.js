@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import { message } from 'antd'
 import Link from 'next/link';
 import axiosInstance from '../../utils/axios'
+import BackButton from '../Components/BackButton'
 
 function NewPassword() {
     const router = useRouter()
@@ -44,6 +45,8 @@ function NewPassword() {
             <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
                 <div className="w-full max-w-md space-y-8">
+
+                    <BackButton />
 
                     <div>
                         <img

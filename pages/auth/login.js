@@ -6,6 +6,7 @@ import { useCookies } from 'react-cookie';
 import { message } from 'antd'
 const axios = require('axios');
 import Link from 'next/link';
+import BackButton from '../Components/BackButton';
 
 export default function Login() {
     const [cookies, setCookie, removeCookie] = useCookies(['jwt', 'UID', "UUID"]);
@@ -84,6 +85,8 @@ export default function Login() {
             <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
                 <div className="w-full max-w-md space-y-8">
+
+                    <BackButton />
 
                     <div>
                         <img

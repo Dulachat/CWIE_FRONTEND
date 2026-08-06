@@ -4,6 +4,7 @@ import StudentNavbar from "../Components/StudentNavbar";
 import { useRouter } from "next/router";
 import axiosInstance from "../../utils/axios";
 import FormEditDiary from "../Components/FormEditDiary";
+import BackButton from "../Components/BackButton";
 
 export default function EditDiary() {
   const router = useRouter();
@@ -69,7 +70,8 @@ export default function EditDiary() {
 
           <StudentNavbar />
           <header className="bg-white shadow">
-            <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+              <BackButton className="!mb-0 !mr-0" />
               <h3 className=" text-xl font-bold  tracking-tight text-gray-900 inline">
                 {dataStore?.data?.title_name +
                   dataStore?.data?.fname_TH +
